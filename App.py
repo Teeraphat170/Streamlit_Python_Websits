@@ -12,18 +12,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 TestX = pd.read_csv('Data/Dataset/All134.csv')
-print(TestX)
-
-st.set_page_config(
-    page_title="Real-Time Data Science Dashboard",
-    page_icon="✅",
-    layout="wide",
-)
-st.title("Real-Time / Live Data Science Dashboard")
-job_filter = st.selectbox("Select the Job", pd.unique(TestX["Unnamed: 0"]))
+# print(TestX)
 
 
-# st.write("Hello Streamlit!")
+
+
+st.write(TestX)
 
 # Result,timeX,prediction_proba,prediction = ReadCSV(TestX)
 # print(Result,timeX,prediction_proba,prediction)
