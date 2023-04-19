@@ -1,4 +1,4 @@
-import TestPredict
+
 import numpy as np
 import pandas as pd
 import statistics
@@ -135,7 +135,7 @@ def ReadCSV(df):
         newresult = result[['Std3','Std2','Mean2','Std1','PToP1','PToP4','PToP2','Std4','Kurtosis1','Kurtosis4']]
         # okng,timeX,prediction = TestPredict.predict(newresult) #Unsupervised
         # okng,timeX,prediction_proba = TestPredict.predict(newresult) #Supervised
-        okng,timeX,prediction_proba,prediction = TestPredict.predict(newresult) #Supervised And IsolationForest
+        okng,timeX,prediction_proba,prediction = predict(newresult) #Supervised And IsolationForest
 
         # print(newresult)
         # data = {"Ok_NG":okng,
@@ -157,3 +157,24 @@ def ReadCSV(df):
     # return filename
 
 
+def predict(TestX):
+    time = datetime.today().strftime('%H:%M:%S')
+    # filename = filename
+    df = TestX
+    # print(df)
+
+    #unsupervised IsolationForest
+    load_clf = pickle.load(open('Model/IsolationForest_7.pkl', 'rb')) #---------------------ใช้อันนี้เป็นหลัก---------------------#
+
+    # IsolationForest
+    prediction = load_clf.predict(df) 
+    prediction_proba = load_clf.decision_function(df)
+
+    if prediction[0] == 0 and prediction_proba[0][0] > 0.51:
+        OKNG = 'NG'
+        # OKNG = 'OK'
+    else:
+        OKNG = 'OK'
+        # OKNG = 'NG'
+
+    return OKNG,time,prediction_proba,prediction 
