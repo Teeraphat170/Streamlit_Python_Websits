@@ -1,18 +1,20 @@
 import numpy as np
 import pandas as pd
-from Predict import predict
+# from Predict import predict
 import statistics
 import pickle
 from datetime import datetime
 from scipy.stats import kurtosis
+from firebase import firebase
 import warnings
 warnings.filterwarnings("ignore")
 
 # data = pd.read_csv('Data/Dataset/All134.csv')
-data = pd.read_csv('Data/Dataset/TotalFile35_36.csv')
+# data = pd.read_csv('Data/Dataset/TotalFile35_36.csv')
 
+
+# Main
 def ReadCSV(df):
-    # filename = filename
     TestX = df
     TestX = TestX.iloc[: , 1:] 
 
@@ -115,18 +117,18 @@ def ReadCSV(df):
 
         okng,timeX,prediction_proba,prediction = predict(newresult) #Supervised And IsolationForest
 
-        # ToFirebase
-        # vdv = ToFirebase(okng,timeX,prediction_proba,prediction)
-
         #if wanna see Result
-        print(First,Last,okng,timeX,prediction_proba,prediction) 
+        # print(First,Last,okng,timeX,prediction_proba[0],prediction[0]) 
+
+        # ToFirebase
+        vdv = ToFirebase(okng,timeX,prediction_proba,prediction)
 
         First = First + 5
         Last = Last + 5
 
     return okng,timeX,prediction_proba,prediction
 
-
+# Prediction
 def predict(TestX):
     time = datetime.today().strftime('%H:%M:%S')
     df = TestX
@@ -147,20 +149,26 @@ def predict(TestX):
 
     return OKNG,time,prediction_proba,prediction 
 
-# from firebase import firebase
-# def ToFirebase(okng,timeX,prediction_proba,prediction):
+
+# ToFirebase
+def ToFirebase(okng,timeX,prediction_proba,prediction):
     
-#     firebaseX = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
+    firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
 
-#     test = {
-#             'Result':okng,
-#             'Time':timeX,
-#             'Prediction':prediction,
-#             'Probability':prediction_proba[0][0]
-#         }
+    prediction_proba = prediction_proba[0]
+    prediction_proba = round(prediction_proba,2)
 
-#     result = firebaseX.put('FinalProject',test)
-#     return result
+    prediction = prediction[0]
+    prediction = float(prediction)
+
+    data = {
+            'Result':okng,
+            'Time':timeX,
+            'Prediction':prediction,
+            'Probability':prediction_proba
+        }
+
+    result = firebaseDB.post('/FinalProject',data)
+    return result
 
 # okng,timeX,prediction_proba,prediction = ReadCSV(data)
-# print(okng,timeX,prediction_proba,prediction)
