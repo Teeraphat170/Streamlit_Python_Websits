@@ -121,7 +121,7 @@ def ReadCSV(df):
         print(First,Last,okng,timeX,prediction_proba[0],prediction[0]) 
 
         # ToFirebase
-        # vdv = ToFirebase(okng,timeX,prediction_proba,prediction)
+        ToFirebase(okng,timeX,prediction_proba,prediction)
 
         First = First + 5
         Last = Last + 5

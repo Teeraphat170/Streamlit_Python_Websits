@@ -5,6 +5,7 @@ from threading import Thread
 from firebase import firebase
 # import ray
 import time
+import multiprocessing 
 import pickle
 import streamlit as st
 import statistics
@@ -61,40 +62,38 @@ def Run():
             time.sleep(1)
 
 
-def Main():
-    ReadCSV(data)
-    # Result,timeX,prediction_proba,prediction = ReadCSV(data)
+Run()
 
 
-if __name__ == '__main__':
-    Thread(target = Main).start() 
-    time.sleep(10)
-    Thread(target = Run).start()
+# def Main():
+#     ReadCSV(data)
+#     # Result,timeX,prediction_proba,prediction = ReadCSV(data)
 
 
+# def GGG():
+#     p1 = multiprocessing.Process(target=Run)
+#     p2 = multiprocessing.Process(target=Main)
 
-# print(Result,timeX,prediction_proba,prediction)
+#     p1.start()
+#     p2.start()
 
-# def fun1():
-#     time = datetime.today().strftime('%H:%M:%S')
-#     print("Working1",time)
-# def fun2():
-#     time1 = datetime.today().strftime('%H:%M:%S')
-#     print("Working2",time1)
+#     p1.join()
+#     p2.join()
 
-# t1 = Thread(target=fun1)
-# t2 = Thread(target=fun2)
-
-# t1.start()
-# t2.start()
+# if __name__ == '__main__':
+#     GGG()
 
 
 
 
-# Retrieving The Data
-# firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
-# result = firebaseDB.get('/FinalProject/', '')
-# print(result)
+
+
+
+
+
+
+
+
 
 
 
