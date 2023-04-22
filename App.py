@@ -19,7 +19,6 @@ import plotly.express as px
 data = pd.read_csv('Data/Dataset/TotalFile35_36.csv')
 
 def Run():
-    
     placeholder = st.empty()
 
     # Retrieving The Data
@@ -62,14 +61,18 @@ def Run():
             time.sleep(1)
 
 
+def Main():
+    ReadCSV(data)
+    # Result,timeX,prediction_proba,prediction = ReadCSV(data)
 
 
 if __name__ == '__main__':
-    Run()
+    Thread(target = Main).start() 
+    time.sleep(10)
+    Thread(target = Run).start()
 
 
-def Main():
-    Result,timeX,prediction_proba,prediction = ReadCSV(data)
+
 # print(Result,timeX,prediction_proba,prediction)
 
 # def fun1():
