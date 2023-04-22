@@ -62,26 +62,23 @@ def Run():
             time.sleep(1)
 
 
-Run()
+# Run()
 
 
-# def Main():
-#     ReadCSV(data)
+def Main():
+    ReadCSV(data)
 #     # Result,timeX,prediction_proba,prediction = ReadCSV(data)
 
 
-# def GGG():
-#     p1 = multiprocessing.Process(target=Run)
-#     p2 = multiprocessing.Process(target=Main)
+def GGG():
+    p1 = multiprocessing.Process(target=Run)
+    p2 = multiprocessing.Process(target=Main)
 
-#     p1.start()
-#     p2.start()
+    p1.start()
+    p2.start()
 
-#     p1.join()
-#     p2.join()
-
-# if __name__ == '__main__':
-#     GGG()
+if __name__ == '__main__':
+    GGG()
 
 
 
