@@ -10,7 +10,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 # data = pd.read_csv('Data/Dataset/All134.csv')
-# data = pd.read_csv('Data/Dataset/TotalFile35_36.csv')
+data = pd.read_csv('Data/Dataset/TotalFile35_36.csv')
 
 
 # Main
@@ -171,4 +171,4 @@ def ToFirebase(okng,timeX,prediction_proba,prediction):
     result = firebaseDB.post('/FinalProject',data)
     return result
 
-# okng,timeX,prediction_proba,prediction = ReadCSV(data)
+okng,timeX,prediction_proba,prediction = ReadCSV(data)

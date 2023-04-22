@@ -2,6 +2,7 @@ from datetime import datetime
 from scipy.stats import kurtosis
 from MainFile import ReadCSV
 from threading import Thread
+from firebase import firebase
 # import ray
 import time
 import pickle
@@ -13,36 +14,63 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.express as px
-import warnings
-warnings.filterwarnings("ignore")
+# import warnings
+# warnings.filterwarnings("ignore")
+data = pd.read_csv('Data/Dataset/TotalFile35_36.csv')
 
-
-def Test():
-    data = pd.read_csv('Data/Dataset/TotalFile35_36.csv')
-    ForTest = data
-    ForTest = ForTest["level_2"].head(50)
-    DataQ = pd.DataFrame(ForTest)
-
+def Run():
+    
     placeholder = st.empty()
 
-    for seconds in range(10):
+    # Retrieving The Data
+    for seconds in range(100):
+        firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
+        result = firebaseDB.get('/FinalProject', '')
 
+        df = pd.DataFrame()
+
+        for KeyName in result:
+            Prediction = result[KeyName]["Prediction"]
+            Probability = result[KeyName]["Probability"]
+            Result = result[KeyName]["Result"]
+            Time = result[KeyName]["Time"]
+
+            # print(Prediction,Probability,Result,Time)
+            Data = {"Prediction":[Prediction],"Probability":[Probability],
+                "Result":[Result],"Time":[Time]}
+            # print(Data)
+            Data = pd.DataFrame(Data)
+            df = pd.concat([df, Data], axis=0)
+
+        df = df.reset_index(drop=True)
+        DataQ = df["Prediction"]
+
+        # Make Realtime
         list = []
         i = 0
-        while i < len(ForTest.index):
+        # for XXX in len(df.index):
+        while i < len(df.index):
             i = i + 1
             list.append(i)
             X = pd.DataFrame(list,columns = ['X-axis'])
-
-            result = pd.concat([X, DataQ], axis=1)
+        result = pd.concat([X, DataQ], axis=1)
+        # print(result)
 
         with placeholder.container():
 
             st.line_chart(result, x='X-axis')
             time.sleep(1)
 
+
+
+
 if __name__ == '__main__':
-    Test()
+    Run()
+
+
+def Main():
+    Result,timeX,prediction_proba,prediction = ReadCSV(data)
+# print(Result,timeX,prediction_proba,prediction)
 
 # def fun1():
 #     time = datetime.today().strftime('%H:%M:%S')
@@ -60,9 +88,10 @@ if __name__ == '__main__':
 
 
 
+# Retrieving The Data
+# firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
+# result = firebaseDB.get('/FinalProject/', '')
+# print(result)
 
-# st.write(data)
 
-# Result,timeX,prediction_proba,prediction = ReadCSV(data)
-# print(Result,timeX,prediction_proba,prediction)
 
