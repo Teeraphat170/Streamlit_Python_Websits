@@ -3,14 +3,16 @@ import pandas as pd
 # from Predict import predict
 import statistics
 import pickle
+import time
 from datetime import datetime
 from scipy.stats import kurtosis
 from firebase import firebase
+from firebase_admin import db
 import warnings
 warnings.filterwarnings("ignore")
 
 # data = pd.read_csv('Data/Dataset/All134.csv')
-data = pd.read_csv('Data/Dataset/TotalFile35_36.csv')
+# data = pd.read_csv('Data/Dataset/TotalFile35_36.csv')
 
 
 # Main
@@ -118,8 +120,10 @@ def ReadCSV(df):
         okng,timeX,prediction_proba,prediction = predict(newresult) #Supervised And IsolationForest
 
         #if wanna see Result
-        # print(First,Last,okng,timeX,prediction_proba[0],prediction[0]) 
+        print(First,Last,okng,timeX,prediction_proba[0],prediction[0]) 
 
+
+        time.sleep(20)
         # ToFirebase
         ToFirebase(okng,timeX,prediction_proba,prediction)
 
@@ -171,4 +175,4 @@ def ToFirebase(okng,timeX,prediction_proba,prediction):
     result = firebaseDB.post('/FinalProject',data)
     return result
 
-okng,timeX,prediction_proba,prediction = ReadCSV(data)
+# okng,timeX,prediction_proba,prediction = ReadCSV(data)

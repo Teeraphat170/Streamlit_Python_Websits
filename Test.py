@@ -4,9 +4,37 @@ import time
 import numpy as np
 import streamlit as st
 import random
-firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
-# result = firebaseDB.get('/FinalProject', '')
-firebaseDB.delete('/FinalProject','')
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import db
+
+
+# firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
+# # result = firebaseDB.get('/FinalProject', '')
+# firebaseDB.delete('/FinalProject','')
+
+# print(ref)
+# placeholder = st.empty()
+# def show_data(data):
+#     with placeholder.container():
+#         st.write("Data:", data)
+
+# # Function to listen for changes in the Firebase database
+# def listen():
+#     while True:
+#         data = ref.get()
+#         show_data(data)
+
+# # Main function
+# def main():
+#     st.title("Real-time dashboard")
+
+#     # Start listening for changes in the Firebase database
+#     listen()
+
+# if __name__ == '__main__':
+#     main()
+
 # print(result)
 
 # df = pd.DataFrame()
