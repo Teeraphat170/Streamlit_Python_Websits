@@ -123,7 +123,7 @@ def ReadCSV(df):
         print(First,Last,okng,timeX,prediction_proba[0],prediction[0]) 
 
 
-        time.sleep(20)
+        time.sleep(10)
         # ToFirebase
         ToFirebase(okng,timeX,prediction_proba,prediction)
 

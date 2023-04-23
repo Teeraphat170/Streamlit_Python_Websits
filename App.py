@@ -7,8 +7,10 @@ from firebase_admin import credentials
 from firebase_admin import db
 # import ray
 import firebase_admin
+import threading
+import multiprocessing
+import multiprocessing.pool
 import time
-import multiprocessing 
 import pickle
 import streamlit as st
 import statistics
@@ -63,7 +65,7 @@ data = pd.read_csv('Data/Dataset/TotalFile35_36.csv')
 #             st.line_chart(result, x='X-axis')
 #             time.sleep(1)
 
-# # Run()
+# # # Run()
 
 # def Main():
 #     ReadCSV(data)
@@ -87,6 +89,8 @@ def GGG():
     p1.start()
     time.sleep(5)
     p2.start()
+    # p1.join()
+    # p2.join()
 
 if __name__ == '__main__':
     GGG()
