@@ -7,12 +7,27 @@ import random
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
+import numpy as np
+import pandas as pd
+# from Predict import predict
+import statistics
+import pickle
+import time
+from datetime import datetime
+from scipy.stats import kurtosis
+from firebase import firebase
+from firebase_admin import db
+import warnings
+warnings.filterwarnings("ignore")
 
 
-firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
-# # result = firebaseDB.get('/FinalProject', '')
-firebaseDB.delete('/FinalProject','')
+# firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
+# # # result = firebaseDB.get('/FinalProject', '')
+# firebaseDB.delete('/FinalProject','')
 
+x = 10.967966
+rediction_proba = round(x,3)
+print(rediction_proba)
 # print(ref)
 # placeholder = st.empty()
 # def show_data(data):

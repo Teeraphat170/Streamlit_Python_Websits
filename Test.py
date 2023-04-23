@@ -29,9 +29,17 @@ def ReadCSV(df):
     TestX = df
     TestX = TestX.iloc[: , 1:] 
 
+    # Set for 1 container
+    # placeholder = st.empty()
+
+    # Clear Database for New Run 
+    firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
+    firebaseDB.delete('/FinalProject','')
+
     ###### Sliding Windows
     First,Last = 0,390
-    placeholder = st.empty()
+
+    # Main Run
     while Last <= len(TestX): 
    
         Position = TestX.iloc[First:Last]
@@ -126,6 +134,17 @@ def ReadCSV(df):
         # print(newresult)
         newresult = result[['Std3','Std2','Mean2','Std1','PToP1','PToP4','PToP2','Std4','Kurtosis1','Kurtosis4']]
 
+        Std3 = newresult.get("Std3")
+        Std2 = newresult.get("Std2")
+        Mean2 = newresult.get("Mean2")
+        Std1 = newresult.get("Std1")
+        PToP1 = newresult.get("PToP1")
+        PToP4 = newresult.get("PToP4")
+        PToP2 = newresult.get("PToP2")
+        Std4 = newresult.get("Std4")
+        Kurtosis1 = newresult.get("Kurtosis1")
+        Kurtosis4 = newresult.get("Kurtosis4")
+
         okng,timeX,prediction_proba,prediction = predict(newresult) #Supervised And IsolationForest
 
         #if wanna see Result
@@ -134,10 +153,11 @@ def ReadCSV(df):
 
         time.sleep(1)
         # ToFirebase
-        ToFirebase(okng,timeX,prediction_proba,prediction)
+        ToFirebase(okng,timeX,prediction_proba,prediction,Std3,Std2,
+                   Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4)
 
-        with placeholder.container():
-            Run()
+        # with placeholder.container():
+        #     Run()
 
         First = First + 5
         Last = Last + 5
@@ -167,7 +187,7 @@ def predict(TestX):
 
 
 # ToFirebase
-def ToFirebase(okng,timeX,prediction_proba,prediction):
+def ToFirebase(okng,timeX,prediction_proba,prediction,Std3,Std2,Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4):
     
     firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
 
@@ -177,53 +197,93 @@ def ToFirebase(okng,timeX,prediction_proba,prediction):
     prediction = prediction[0]
     prediction = float(prediction)
 
+    Std3 = float(Std3)
+    Std3 = round(Std3,2)
+
+    Std2 = float(Std2)
+    Std2 = round(Std2,2)
+
+    Mean2 = float(Mean2)
+    Mean2 = round(Mean2,2)
+
+    Std1 = float(Std1)
+    Std1 = round(Std1,2)
+
+    PToP1 = float(PToP1)
+    PToP1 = round(PToP1,2)
+
+    PToP4 = float(PToP4)
+    PToP4 = round(PToP4,2)
+
+    PToP2 = float(PToP2)
+    PToP2 = round(PToP2,2)
+
+    Std4 = float(Std4)
+    Std4 = round(Std4,2)
+
+    Kurtosis1 = float(Kurtosis1)
+    Kurtosis1 = round(Kurtosis1,2)
+
+    Kurtosis4 = float(Kurtosis4)
+    Kurtosis4 = round(Kurtosis4,2)
+
     data = {
             'Result':okng,
             'Time':timeX,
             'Prediction':prediction,
-            'Probability':prediction_proba
+            'Probability':prediction_proba,
+            'Std3':Std3,
+            'Std2':Std2,
+            'Mean2':Mean2,
+            'Std1':Std1,
+            'PToP1':PToP1,
+            'PToP4':PToP4,
+            'PToP2':PToP2,
+            'Std4':Std4,
+            'Kurtosis1':Kurtosis1,
+            'Kurtosis4':Kurtosis4,
         }
 
     result = firebaseDB.post('/FinalProject',data)
     return result
 
-def Run():
-    # Retrieving The Data
-        # for seconds in range(1):
-            firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
-            result = firebaseDB.get('/FinalProject', '')
+# def Run():
+#     # Retrieving The Data
+#         # for seconds in range(1):
+#             firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
+#             result = firebaseDB.get('/FinalProject', '')
 
-            df = pd.DataFrame()
+#             df = pd.DataFrame()
 
-            for KeyName in result:
-                Prediction = result[KeyName]["Prediction"]
-                Probability = result[KeyName]["Probability"]
-                Result = result[KeyName]["Result"]
-                Time = result[KeyName]["Time"]
+#             for KeyName in result:
+#                 Prediction = result[KeyName]["Prediction"]
+#                 Probability = result[KeyName]["Probability"]
+#                 Result = result[KeyName]["Result"]
+#                 Time = result[KeyName]["Time"]
 
-                # print(Prediction,Probability,Result,Time)
-                Data = {"Prediction":[Prediction],"Probability":[Probability],
-                    "Result":[Result],"Time":[Time]}
-                # print(Data)
-                Data = pd.DataFrame(Data)
-                df = pd.concat([df, Data], axis=0)
+#                 # print(Prediction,Probability,Result,Time)
+#                 Data = {"Prediction":[Prediction],"Probability":[Probability],
+#                     "Result":[Result],"Time":[Time]}
+#                 # print(Data)
+#                 Data = pd.DataFrame(Data)
+#                 df = pd.concat([df, Data], axis=0)
 
-            df = df.reset_index(drop=True)
-            DataQ = df["Prediction"]
+#             df = df.reset_index(drop=True)
+#             DataQ = df["Prediction"]
 
-            # Make Realtime
-            list = []
-            i = 0
-            while i < len(df.index):
-                i = i + 1
-                list.append(i)
-                X = pd.DataFrame(list,columns = ['X-axis'])
-            result = pd.concat([X, DataQ], axis=1)
-            # print(result)
+#             # Make Realtime
+#             list = []
+#             i = 1
+#             while i < len(df.index) + 1:
+#                 i = i + 1
+#                 list.append(i)
+#                 X = pd.DataFrame(list,columns = ['X-axis'])
+#             result = pd.concat([X, DataQ], axis=1)
+#             # print(result)
 
-            # with placeholder.container():
+#             # with placeholder.container():
 
-            st.line_chart(result, x='X-axis')
-            time.sleep(1)
+#             st.line_chart(result, x='X-axis')
+#             time.sleep(1)
 
 ReadCSV(data)

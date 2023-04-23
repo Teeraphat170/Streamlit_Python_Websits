@@ -132,6 +132,7 @@ def ReadCSV(df):
 
     return okng,timeX,prediction_proba,prediction
 
+
 # Prediction
 def predict(TestX):
     time = datetime.today().strftime('%H:%M:%S')
@@ -152,6 +153,7 @@ def predict(TestX):
         # OKNG = 'NG'
 
     return OKNG,time,prediction_proba,prediction 
+
 
 
 # ToFirebase
