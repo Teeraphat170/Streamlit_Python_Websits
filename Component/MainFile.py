@@ -1,24 +1,26 @@
 import numpy as np
 import pandas as pd
-# from Predict import predict
 import statistics
-import pickle
 import time
-from datetime import datetime
+import warnings
+import streamlit as st
 from scipy.stats import kurtosis
 from firebase import firebase
-from firebase_admin import db
-import warnings
+from Predict import predict
+from ToFirebase import ToFirebase
+from Chart import Run
 warnings.filterwarnings("ignore")
 
 # data = pd.read_csv('Data/Dataset/All134.csv')
-# data = pd.read_csv('Data/Dataset/TotalFile35_36.csv')
-
+data = pd.read_csv('Component/Data/Dataset/TotalFile35_36.csv')
 
 # Main
 def ReadCSV(df):
     TestX = df
     TestX = TestX.iloc[: , 1:] 
+
+    # Set for 1 container
+    placeholder = st.empty()
 
     ###### Sliding Windows
     First,Last = 0,390
@@ -117,64 +119,42 @@ def ReadCSV(df):
         # print(newresult)
         newresult = result[['Std3','Std2','Mean2','Std1','PToP1','PToP4','PToP2','Std4','Kurtosis1','Kurtosis4']]
 
+        Std3 = newresult.get("Std3")
+        Std2 = newresult.get("Std2")
+        Mean2 = newresult.get("Mean2")
+        Std1 = newresult.get("Std1")
+        PToP1 = newresult.get("PToP1")
+        PToP4 = newresult.get("PToP4")
+        PToP2 = newresult.get("PToP2")
+        Std4 = newresult.get("Std4")
+        Kurtosis1 = newresult.get("Kurtosis1")
+        Kurtosis4 = newresult.get("Kurtosis4")
+
         okng,timeX,prediction_proba,prediction = predict(newresult) #Supervised And IsolationForest
 
         #if wanna see Result
-        print(First,Last,okng,timeX,prediction_proba[0],prediction[0]) 
+        # print(okng,timeX,prediction_proba[0],prediction[0],Std3,Std2,Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4) 
 
-
-        time.sleep(10)
+        # time.sleep(1)
         # ToFirebase
-        ToFirebase(okng,timeX,prediction_proba,prediction)
+        ToFirebase(okng,timeX,prediction_proba,prediction,Std3,Std2,
+                   Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4)
+        
+        
+        with placeholder.container():
+            Run()
 
         First = First + 5
         Last = Last + 5
 
     return okng,timeX,prediction_proba,prediction
 
-
-# Prediction
-def predict(TestX):
-    time = datetime.today().strftime('%H:%M:%S')
-    df = TestX
-
-    load_clf = pickle.load(open('Data/Model/IsolationForest_7.pkl', 'rb')) 
-
-    # IsolationForest
-    prediction = load_clf.predict(df) 
-    prediction_proba = load_clf.decision_function(df)
-    # print(prediction_proba)
-
-    if prediction[0] == -1 and prediction_proba[0] < 0:
-        OKNG = 'NG'
-        # OKNG = 'OK'
-    else:
-        OKNG = 'OK'
-        # OKNG = 'NG'
-
-    return OKNG,time,prediction_proba,prediction 
-
-
-
-# ToFirebase
-def ToFirebase(okng,timeX,prediction_proba,prediction):
-    
+def WTF():
+    # Clear Database for New Run 
     firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
+    firebaseDB.delete('/FinalProject','')
+    print("From MainFile")
+    ReadCSV(data)
 
-    prediction_proba = prediction_proba[0]
-    prediction_proba = round(prediction_proba,2)
 
-    prediction = prediction[0]
-    prediction = float(prediction)
-
-    data = {
-            'Result':okng,
-            'Time':timeX,
-            'Prediction':prediction,
-            'Probability':prediction_proba
-        }
-
-    result = firebaseDB.post('/FinalProject',data)
-    return result
-
-# okng,timeX,prediction_proba,prediction = ReadCSV(data)
+WTF()

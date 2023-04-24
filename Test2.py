@@ -21,19 +21,19 @@ import warnings
 warnings.filterwarnings("ignore")
 
 
-# firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
+firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
 # # # result = firebaseDB.get('/FinalProject', '')
-# firebaseDB.delete('/FinalProject','')
+firebaseDB.delete('/FinalProject','')
 
-x = 10.967966
-rediction_proba = round(x,3)
-print(rediction_proba)
-# print(ref)
-# placeholder = st.empty()
-# def show_data(data):
-#     with placeholder.container():
-#         st.write("Data:", data)
+# def Run():
 
+#         firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
+#         result = firebaseDB.get('/FinalProject', '')
+#         vals = list(result.values())
+#         # df = pd.DataFrame()
+#         print(len(vals))
+
+# Run()
 # # Function to listen for changes in the Firebase database
 # def listen():
 #     while True:

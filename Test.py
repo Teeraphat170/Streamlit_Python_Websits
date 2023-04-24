@@ -21,7 +21,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 # data = pd.read_csv('Data/Dataset/All134.csv')
-data = pd.read_csv('Data/Dataset/TotalFile35_36.csv')
+data = pd.read_csv('Component/Data/Dataset/TotalFile35_36.csv')
 
 
 # Main
@@ -30,7 +30,7 @@ def ReadCSV(df):
     TestX = TestX.iloc[: , 1:] 
 
     # Set for 1 container
-    # placeholder = st.empty()
+    placeholder = st.empty()
 
     # Clear Database for New Run 
     firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
@@ -156,8 +156,8 @@ def ReadCSV(df):
         ToFirebase(okng,timeX,prediction_proba,prediction,Std3,Std2,
                    Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4)
 
-        # with placeholder.container():
-        #     Run()
+        with placeholder.container():
+            Run()
 
         First = First + 5
         Last = Last + 5
@@ -169,7 +169,7 @@ def predict(TestX):
     time = datetime.today().strftime('%H:%M:%S')
     df = TestX
 
-    load_clf = pickle.load(open('Data/Model/IsolationForest_7.pkl', 'rb')) 
+    load_clf = pickle.load(open('Component/Data/Model/IsolationForest_7.pkl', 'rb')) 
 
     # IsolationForest
     prediction = load_clf.predict(df) 
@@ -247,43 +247,54 @@ def ToFirebase(okng,timeX,prediction_proba,prediction,Std3,Std2,Mean2,Std1,PToP1
     result = firebaseDB.post('/FinalProject',data)
     return result
 
-# def Run():
-#     # Retrieving The Data
-#         # for seconds in range(1):
-#             firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
-#             result = firebaseDB.get('/FinalProject', '')
+def Run():
+    # Retrieving The Data
+        # for seconds in range(1):
+            firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
+            result = firebaseDB.get('/FinalProject', '')
 
-#             df = pd.DataFrame()
+            df = pd.DataFrame()
 
-#             for KeyName in result:
-#                 Prediction = result[KeyName]["Prediction"]
-#                 Probability = result[KeyName]["Probability"]
-#                 Result = result[KeyName]["Result"]
-#                 Time = result[KeyName]["Time"]
+            for KeyName in result:
+                Prediction = result[KeyName]["Prediction"]
+                Probability = result[KeyName]["Probability"]
+                Result = result[KeyName]["Result"]
+                Time = result[KeyName]["Time"]
+                Std3 = result[KeyName]["Std3"]
+                Std2 = result[KeyName]["Std2"]
+                Mean2 = result[KeyName]["Mean2"]
+                Std1 = result[KeyName]["Std1"]
+                PToP1 = result[KeyName]["PToP1"]
+                PToP4 = result[KeyName]["PToP4"]
+                PToP2 = result[KeyName]["PToP2"]
+                Std4 = result[KeyName]["Std4"]
+                Kurtosis1 = result[KeyName]["Kurtosis1"]
+                Kurtosis4 = result[KeyName]["Kurtosis4"]
 
-#                 # print(Prediction,Probability,Result,Time)
-#                 Data = {"Prediction":[Prediction],"Probability":[Probability],
-#                     "Result":[Result],"Time":[Time]}
-#                 # print(Data)
-#                 Data = pd.DataFrame(Data)
-#                 df = pd.concat([df, Data], axis=0)
+                # print(Prediction,Probability,Result,Time)
+                Data = {"Prediction":[Prediction],"Probability":[Probability],"Result":[Result],"Time":[Time],"Std3":[Std3],
+                    "Std2":[Std2],"Mean2":[Mean2],"Std1":[Std1],"PToP1":[PToP1],"PToP4":[PToP4],
+                    "PToP2":[PToP2],"Std4":[Std4],"Kurtosis1":[Kurtosis1],"Kurtosis4":[Kurtosis4],}
+                # print(Data)
+                Data = pd.DataFrame(Data)
+                df = pd.concat([df, Data], axis=0)
 
-#             df = df.reset_index(drop=True)
-#             DataQ = df["Prediction"]
+            df = df.reset_index(drop=True)
+            DataQ = df["Prediction"]
 
-#             # Make Realtime
-#             list = []
-#             i = 1
-#             while i < len(df.index) + 1:
-#                 i = i + 1
-#                 list.append(i)
-#                 X = pd.DataFrame(list,columns = ['X-axis'])
-#             result = pd.concat([X, DataQ], axis=1)
-#             # print(result)
+            # Make Realtime
+            list = []
+            i = 1
+            while i < len(df.index) + 1:
+                i = i + 1
+                list.append(i)
+                X = pd.DataFrame(list,columns = ['X-axis'])
+            result = pd.concat([X, DataQ], axis=1)
+            # print(result)
 
-#             # with placeholder.container():
+            # with placeholder.container():
 
-#             st.line_chart(result, x='X-axis')
-#             time.sleep(1)
+            st.line_chart(result, x='X-axis')
+            time.sleep(1)
 
 ReadCSV(data)
