@@ -150,8 +150,6 @@ def ReadCSV(df):
         #if wanna see Result
         print(First,Last,okng,timeX,prediction_proba[0],prediction[0]) 
 
-
-        time.sleep(1)
         # ToFirebase
         ToFirebase(okng,timeX,prediction_proba,prediction,Std3,Std2,
                    Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4)
@@ -295,6 +293,6 @@ def Run():
             # with placeholder.container():
 
             st.line_chart(result, x='X-axis')
-            time.sleep(1)
+            
 
 ReadCSV(data)

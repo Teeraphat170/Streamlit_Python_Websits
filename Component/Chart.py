@@ -9,11 +9,11 @@ warnings.filterwarnings("ignore")
 
 
 def Run():
-        time.sleep(0.5)
+        # time.sleep(0.5)
         df = pd.DataFrame()
         firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
         result = firebaseDB.get('/FinalProject', '')
-        print("From Run")
+        print("Chart.py")
         print("")
         # print(type(result))
         # st.dataframe(result)

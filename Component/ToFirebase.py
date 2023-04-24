@@ -4,7 +4,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 def ToFirebase(okng,timeX,prediction_proba,prediction,Std3,Std2,Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4):
-    print("From ToFirebase")
+    print("ToFirebase.py")
     print("")
     firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
 

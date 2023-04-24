@@ -2,7 +2,7 @@ import pickle
 from datetime import datetime
 
 def predict(TestX):
-    print("From predict")
+    print("Predict.py")
     print("")
     time = datetime.today().strftime('%H:%M:%S')
     df = TestX

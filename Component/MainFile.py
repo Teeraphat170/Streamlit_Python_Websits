@@ -153,7 +153,7 @@ def WTF():
     # Clear Database for New Run 
     firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
     firebaseDB.delete('/FinalProject','')
-    print("From MainFile")
+    print("MainFile.py")
     ReadCSV(data)
 
 
