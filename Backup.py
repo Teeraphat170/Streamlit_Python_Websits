@@ -197,7 +197,7 @@ def ReadCSV(df):
             print(df)
             st.dataframe(df)
             DataQ = df["Prediction"]
-
+            st.line_chart(DataQ)
                     # Make Realtime
         # listForRealtime = []
         # i = 1
@@ -207,7 +207,7 @@ def ReadCSV(df):
         #     X = pd.DataFrame(listForRealtime,columns = ['X-axis'])
         # result = pd.concat([X, DataQ], axis=1)
 
-        # st.line_chart(result, x='X-axis')
+        
                 # st.dataframe(df)
             # except:
                 # pass

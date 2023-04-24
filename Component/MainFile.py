@@ -20,6 +20,7 @@ def ReadCSV(df):
     TestX = TestX.iloc[: , 1:] 
 
     # Set for 1 container
+    st.set_page_config(layout="wide")
     placeholder = st.empty()
 
     ###### Sliding Windows
@@ -139,8 +140,7 @@ def ReadCSV(df):
         # ToFirebase
         ToFirebase(okng,timeX,prediction_proba,prediction,Std3,Std2,
                    Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4)
-        
-        
+          
         with placeholder.container():
             Run()
 
@@ -153,7 +153,6 @@ def WTF():
     # Clear Database for New Run 
     firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
     firebaseDB.delete('/FinalProject','')
-    print("MainFile.py")
     ReadCSV(data)
 
 
