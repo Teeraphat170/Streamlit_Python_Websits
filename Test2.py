@@ -17,6 +17,7 @@ from datetime import datetime
 from scipy.stats import kurtosis
 from firebase import firebase
 from firebase_admin import db
+import plotly.express as px
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -50,13 +51,19 @@ for key, value in result.items():
     df = pd.concat([df, Data], axis=0)
 
 df = df.reset_index(drop=True)
-DataQ = df[["Prediction","Probability","Std3","Std2","Mean2","Std1","PToP1","PToP4","PToP2","Std4","Kurtosis1","Kurtosis4"]]
-TimeX = df["Time"]
-print(DataQ)
-# print(df)
-st.line_chart(DataQ)
+DataQ = df[["Prediction","Probability","Std3","Std2","Mean2","Std1","PToP1","PToP4","PToP2","Std4","Kurtosis1","Kurtosis4","Time"]]
+# DataQ = DataQ.set_index('Time')
+# Test = df[["Prediction","Probability","Std3"]]
+fig = px.line(DataQ, x='Time',y=DataQ.columns[:-1])
+# TimeX = df["Time"]
+# print(DataQ)
+# # print(df)
+# st.line_chart(DataQ ,x=DataQ.index)
+st.dataframe(DataQ)
+st.plotly_chart(fig)
+
 # chart_data = pd.DataFrame(
-#     np.random.randn(20, 3),
+#     np.random.randn(20, 3), 
 #     columns=["a", "b", "c"])
 # print(chart_data)
 
