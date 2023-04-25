@@ -21,40 +21,50 @@ import warnings
 warnings.filterwarnings("ignore")
 
 
-# firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
-# # # # result = firebaseDB.get('/FinalProject', '')
+firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
+result = firebaseDB.get('/FinalProject', '')
 # firebaseDB.delete('/FinalProject','')
+st.set_page_config(layout="wide")
+df = pd.DataFrame()
+for key, value in result.items():
+    Prediction = value["Prediction"]
+    Probability = value["Probability"]
+    Result = value["Result"]
+    Time = value["Time"]
+    Std3 = value["Std3"]
+    Std2 = value["Std2"]
+    Mean2 = value["Mean2"]
+    Std1 = value["Std1"]
+    PToP1 = value["PToP1"]
+    PToP4 = value["PToP4"]
+    PToP2 = value["PToP2"]
+    Std4 = value["Std4"]
+    Kurtosis1 = value["Kurtosis1"]
+    Kurtosis4 = value["Kurtosis4"]
 
+    Data = {"Prediction":[Prediction],"Probability":[Probability],"Result":[Result],"Time":[Time],"Std3":[Std3],
+                    "Std2":[Std2],"Mean2":[Mean2],"Std1":[Std1],"PToP1":[PToP1],"PToP4":[PToP4],
+                    "PToP2":[PToP2],"Std4":[Std4],"Kurtosis1":[Kurtosis1],"Kurtosis4":[Kurtosis4],}
+            
+    Data = pd.DataFrame(Data)
+    df = pd.concat([df, Data], axis=0)
 
-st.set_page_config(page_title="Plotting Demo", page_icon="📈")
+df = df.reset_index(drop=True)
+DataQ = df[["Prediction","Probability","Std3","Std2","Mean2","Std1","PToP1","PToP4","PToP2","Std4","Kurtosis1","Kurtosis4"]]
+TimeX = df["Time"]
+print(DataQ)
+# print(df)
+st.line_chart(DataQ)
+# chart_data = pd.DataFrame(
+#     np.random.randn(20, 3),
+#     columns=["a", "b", "c"])
+# print(chart_data)
 
-st.markdown("# Plotting Demo")
-st.sidebar.header("Plotting Demo")
-st.write(
-    """This demo illustrates a combination of plotting and animation with
-Streamlit. We're generating a bunch of random numbers in a loop for around
-5 seconds. Enjoy!"""
-)
+# import streamlit as st
+# from vega_datasets import data
 
-progress_bar = st.sidebar.progress(0)
-status_text = st.sidebar.empty()
-last_rows = np.random.randn(1, 1)
-chart = st.line_chart(last_rows)
-
-for i in range(1, 101):
-    new_rows = last_rows[-1, :] + np.random.randn(5, 1).cumsum(axis=0)
-    status_text.text("%i%% Complete" % i)
-    chart.add_rows(new_rows)
-    progress_bar.progress(i)
-    last_rows = new_rows
-    time.sleep(0.05)
-
-progress_bar.empty()
-
-# Streamlit widgets automatically run the script from top to bottom. Since
-# this button is not connected to any other logic, it just causes a plain
-# rerun.
-st.button("Re-run")
+# source = data.cars()
+# print(source)
 # def Run():
 
 #         firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)

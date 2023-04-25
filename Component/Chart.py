@@ -36,14 +36,15 @@ def Run():
         df = pd.concat([df, Data], axis=0)
 
     df = df.reset_index(drop=True)
-    DataQ = df["Prediction"]
-
+    Prediction = df["Prediction"]
+    DataQ = df[["Prediction","Probability","Std3","Std2","Mean2","Std1","PToP1","PToP4","PToP2","Std4","Kurtosis1","Kurtosis4"]]
     # Make Realtime
     col2, col3 = st.columns((30,30))
     with col2:
-        st.line_chart(DataQ)
+        st.line_chart(Prediction)
     with col3:
         st.dataframe(df)
+    st.line_chart(DataQ)
 
         
         
