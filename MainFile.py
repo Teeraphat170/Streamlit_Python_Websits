@@ -16,11 +16,12 @@ data = pd.read_csv('Component/Data/Dataset/TotalFile35_36.csv')
 
 # Main
 def ReadCSV(df):
+    print("Calculate")
     TestX = df
     TestX = TestX.iloc[: , 1:] 
 
     # Set for 1 container
-    st.set_page_config(layout="wide")
+    
     placeholder = st.empty()
 
     ###### Sliding Windows
@@ -153,7 +154,10 @@ def WTF():
     # Clear Database for New Run 
     firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
     firebaseDB.delete('/FinalProject','')
+    print("Start")
     ReadCSV(data)
 
-
-WTF()
+# st.set_page_config(layout="wide")
+# Start = st.button("Click here to start")
+# if Start:
+#     WTF()

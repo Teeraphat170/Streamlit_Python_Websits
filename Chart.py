@@ -10,6 +10,7 @@ warnings.filterwarnings("ignore")
 
 
 def Run():
+    print("Chart")
     df = pd.DataFrame()
     firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
     result = firebaseDB.get('/FinalProject', '')
@@ -37,18 +38,13 @@ def Run():
         df = pd.concat([df, Data], axis=0)
 
     df = df.reset_index(drop=True)
-
-    Prediction = df["Prediction"]
-    PredictionPie = pd.DataFrame()
-    PredictionPie['Prediction'] = df["Prediction"]
-
     DataQ = df[["Prediction","Probability","Std3","Std2","Mean2","Std1","PToP1","PToP4","PToP2","Std4","Kurtosis1","Kurtosis4","Time"]]
 
     # Make Realtime
-    col2, col3 = st.columns((30,30))
+    col1, col2 = st.columns((30,30))
+    with col1:
+        st.line_chart(df["Prediction"])
     with col2:
-        st.line_chart(Prediction)
-    with col3:
         st.dataframe(df)
 
     col2, col3 = st.columns((30,30))
@@ -56,8 +52,11 @@ def Run():
         fig = px.line(DataQ, x = 'Time',y = DataQ.columns[:-1])
         st.plotly_chart(fig)
     with col3:
-        Prediction1 = len(PredictionPie[PredictionPie['Prediction']==1])
-        Prediction_1 = len(PredictionPie[PredictionPie['Prediction']==-1])
+        # fig = px.line(DataQ, x = 'Time',y = DataQ.columns[:-1])
+        # st.plotly_chart(fig)
+
+        Prediction1 = len(df[df['Prediction']==1])
+        Prediction_1 = len(df[df['Prediction']==-1])
         piechart = [Prediction1,Prediction_1]
         detection = ['Normally','Anomaly']
         fig = px.pie(values=piechart,names=detection)

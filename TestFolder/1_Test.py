@@ -48,7 +48,10 @@ warnings.filterwarnings("ignore")
 # """
 # )
 # st.markdown("<h1 style='text-align: center; color: white;'>My Dashboard</h1>", unsafe_allow_html=True)
+firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
+firebaseDB.delete('/FinalProject','')
 
-df = pd.DataFrame({'team': ['A', 'A', 'A', 'A', 'B', 'B', 'B', 'B']})
-print(df)
-print(len(df[df['team']=='A']))
+# test = st.button('Say hello')
+# if test:
+#     st.write('Why hello there')
+

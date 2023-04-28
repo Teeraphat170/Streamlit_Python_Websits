@@ -1,6 +1,6 @@
 from datetime import datetime
 from scipy.stats import kurtosis
-from Component.MainFile import ReadCSV,WTF
+from MainFile import ReadCSV,WTF
 from threading import Thread
 from firebase import firebase
 from firebase_admin import credentials
@@ -24,8 +24,11 @@ import plotly.express as px
 # warnings.filterwarnings("ignore")
 # data = pd.read_csv('Data/Dataset/TotalFile35_36.csv')
 
+st.set_page_config(layout="wide")
+Start = st.button("Click here to start")
+if Start:
+    WTF()
 
-WTF()
 
 
 
