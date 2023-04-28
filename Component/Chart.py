@@ -1,4 +1,5 @@
 from firebase import firebase
+import plotly.express as px
 import pandas as pd
 import time
 import streamlit as st
@@ -36,15 +37,33 @@ def Run():
         df = pd.concat([df, Data], axis=0)
 
     df = df.reset_index(drop=True)
+
     Prediction = df["Prediction"]
-    DataQ = df[["Prediction","Probability","Std3","Std2","Mean2","Std1","PToP1","PToP4","PToP2","Std4","Kurtosis1","Kurtosis4"]]
+    PredictionPie = pd.DataFrame()
+    PredictionPie['Prediction'] = df["Prediction"]
+
+    DataQ = df[["Prediction","Probability","Std3","Std2","Mean2","Std1","PToP1","PToP4","PToP2","Std4","Kurtosis1","Kurtosis4","Time"]]
+
     # Make Realtime
     col2, col3 = st.columns((30,30))
     with col2:
         st.line_chart(Prediction)
     with col3:
         st.dataframe(df)
-    st.line_chart(DataQ)
+
+    col2, col3 = st.columns((30,30))
+    with col2:
+        fig = px.line(DataQ, x = 'Time',y = DataQ.columns[:-1])
+        st.plotly_chart(fig)
+    with col3:
+        Prediction1 = len(PredictionPie[PredictionPie['Prediction']==1])
+        Prediction_1 = len(PredictionPie[PredictionPie['Prediction']==-1])
+        piechart = [Prediction1,Prediction_1]
+        detection = ['Normally','Anomaly']
+        fig = px.pie(values=piechart,names=detection)
+        st.plotly_chart(fig, use_container_width=True)
+
+    
 
         
         
