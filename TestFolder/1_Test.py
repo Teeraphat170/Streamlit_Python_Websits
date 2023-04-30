@@ -55,3 +55,24 @@ firebaseDB.delete('/FinalProject','')
 # if test:
 #     st.write('Why hello there')
 
+col1, col2 = st.columns(2)
+
+# Define CSS styles for the columns
+col1_style = """
+    border: 1px solid black;
+    background-color: lightblue;
+    padding: 10px;
+"""
+
+col2_style = """
+    border: 1px solid black;
+    background-color: lightgreen;
+    padding: 10px;
+"""
+
+# Use the st.markdown function to apply the styles to the columns
+with col1:
+    st.markdown(f"<div style='{col1_style}'>Column 1</div>", unsafe_allow_html=True)
+
+with col2:
+    st.markdown(f"<div style='{col2_style}'>Column 2</div>", unsafe_allow_html=True)

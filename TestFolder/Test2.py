@@ -61,7 +61,16 @@ warnings.filterwarnings("ignore")
 data = {
   "calories": [420, 380, 390, 380, 400, 390],
   "duration": [50, 40, 45, 50, 50, 45],
-  "test":[12, 16, 15, 16, 15, 19]
+  "test":[12, 16, 15, 16, 15, 19],
+    "calories1": [420, 380, 390, 380, 400, 390],
+  "duration1": [50, 40, 45, 50, 50, 45],
+  "test1":[12, 16, 15, 16, 15, 19],
+    "calories3": [420, 380, 390, 380, 400, 390],
+  "duration3": [50, 40, 45, 50, 50, 45],
+  "test3":[12, 16, 15, 16, 15, 19],
+    "calories4": [420, 380, 390, 380, 400, 390],
+  "duration4": [50, 40, 45, 50, 50, 45],
+  "test4":[12, 16, 15, 16, 15, 19],
 }
 
 #load data into a DataFrame object:
@@ -72,23 +81,23 @@ df = pd.DataFrame(data)
 # st.line_chart(DataQ ,x=DataQ.index)
 st.set_page_config(layout="wide")
 
-with open('TestFolder/Test.css') as f:
+with open('TestFolder/Test.css') as f: # Test.css with command prompt : TestFolder/Test.css with PowerShell
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
+
+# st.line_chart(df["calories"])
 
 col1, col2 = st.columns((30,30))
 with col1:
     st.line_chart(df["calories"])
 with col2:
     st.dataframe(df)
-    
-col3, col4 = st.columns((30,30))
-with col3:
-    fig = px.line(df, x = 'test',y = df.columns[:-1])
-    st.plotly_chart(fig)
-with col4:
-        # fig = px.line(DataQ, x = 'Time',y = DataQ.columns[:-1])
-        # st.plotly_chart(fig)
 
+col3, col4 = st.columns(2)
+with col3:  
+    fig = px.line(df, x = 'test',y = df.columns[:-1])
+    st.plotly_chart(fig,use_container_width=True, sharing="streamlit", theme="streamlit")  
+with col4:
     Prediction1 = len(df[df['calories']==400])
     Prediction_1 = len(df[df['duration']==50])
     piechart = [Prediction1,Prediction_1]
