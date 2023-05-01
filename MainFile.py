@@ -16,13 +16,15 @@ data = pd.read_csv('Component/Data/Dataset/TotalFile35_36.csv')
 
 # Main
 def ReadCSV(df):
-    print("Calculate")
+    # print("Calculate")
     TestX = df
     TestX = TestX.iloc[: , 1:] 
 
     # Set for 1 container
-    
     placeholder = st.empty()
+
+    # Add new
+    IfNotUseDatabase = pd.DataFrame()
 
     ###### Sliding Windows
     First,Last = 0,390
@@ -118,8 +120,9 @@ def ReadCSV(df):
         result = pd.concat([result, PtoP], axis=1)
         result = pd.concat([result, RMS], axis=1)
 
-        # print(newresult)
+        
         newresult = result[['Std3','Std2','Mean2','Std1','PToP1','PToP4','PToP2','Std4','Kurtosis1','Kurtosis4']]
+        # print(newresult)
 
         Std3 = newresult.get("Std3")
         Std2 = newresult.get("Std2")
@@ -132,18 +135,30 @@ def ReadCSV(df):
         Kurtosis1 = newresult.get("Kurtosis1")
         Kurtosis4 = newresult.get("Kurtosis4")
 
+
+        # If_Not_use_database
         okng,timeX,prediction_proba,prediction = predict(newresult) #Supervised And IsolationForest
+        data = {
+            "Result": [okng],
+            "Time": [timeX],
+            "Probability": [prediction_proba][0],
+            "Prediction": [prediction][0],
+            }
+        result_for_predict = pd.DataFrame(data)
+        result_for_predict = pd.concat([result_for_predict, newresult], axis=1)
+        IfNotUseDatabase = pd.concat([IfNotUseDatabase,result_for_predict], axis=0)
+        IfNotUseDatabase = IfNotUseDatabase.reset_index(drop=True)
+        # print(IfNotUseDatabase)
 
         #if wanna see Result
         # print(okng,timeX,prediction_proba[0],prediction[0],Std3,Std2,Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4) 
 
-        # time.sleep(1)
         # ToFirebase
         ToFirebase(okng,timeX,prediction_proba,prediction,Std3,Std2,
-                   Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4)
+                   Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4,)
           
         with placeholder.container():
-            Run()
+            Run(IfNotUseDatabase)
 
         First = First + 5
         Last = Last + 5
@@ -152,9 +167,9 @@ def ReadCSV(df):
 
 def WTF():
     # Clear Database for New Run 
-    firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
-    firebaseDB.delete('/FinalProject','')
-    print("Start")
+    # firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
+    # firebaseDB.delete('/FinalProject','')
+    # print("Start")
     ReadCSV(data)
 
 # st.set_page_config(layout="wide")

@@ -58,6 +58,9 @@ warnings.filterwarnings("ignore")
 # # DataQ = DataQ.set_index('Time')
 # # Test = df[["Prediction","Probability","Std3"]]
 # fig = px.line(DataQ, x='Time',y=DataQ.columns[:-1])
+data = pd.read_csv('Component/Data/Dataset/TotalFile35_36.csv')
+data1 = pd.read_csv('Component/Data/Dataset/All134.csv')
+
 data = {
   "calories": [420, 380, 390, 380, 400, 390],
   "duration": [50, 40, 45, 50, 50, 45],
@@ -106,6 +109,20 @@ with col4:
     st.plotly_chart(fig, use_container_width=True)
 
 
+
+add_selectbox = st.sidebar.selectbox(
+    "How would you like to be contacted?",
+    ("data", "data1")
+)
+
+if add_selectbox:
+    st.write("datass")
+# Using "with" notation
+with st.sidebar:
+    add_radio = st.radio(
+        "Choose a shipping method",
+        ("Standard (5-15 days)", "Express (2-5 days)")
+    )
 # col2.markdown(
 #     """
 #     <style>

@@ -25,12 +25,13 @@ import plotly.express as px
 # data = pd.read_csv('Data/Dataset/TotalFile35_36.csv')
 
 st.set_page_config(layout="wide")
-Start = st.button("Click here to start")
-if Start:
-    WTF()
+
+# Start = st.button("Click here to start")
+# if Start:
+#     WTF()
 
 
-
+WTF()
 
 
 

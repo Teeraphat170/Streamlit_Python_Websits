@@ -1,7 +1,8 @@
 from firebase import firebase
-import time
+import pandas as pd
 import warnings
 warnings.filterwarnings("ignore")
+
 
 def ToFirebase(okng,timeX,prediction_proba,prediction,Std3,Std2,Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4):
     firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
@@ -42,6 +43,8 @@ def ToFirebase(okng,timeX,prediction_proba,prediction,Std3,Std2,Mean2,Std1,PToP1
     Kurtosis4 = float(Kurtosis4)
     Kurtosis4 = round(Kurtosis4,2)
 
+
+    # SendtodataBase
     data = {
             'Result':okng,
             'Time':timeX,
@@ -58,8 +61,6 @@ def ToFirebase(okng,timeX,prediction_proba,prediction,Std3,Std2,Mean2,Std1,PToP1
             'Kurtosis1':Kurtosis1,
             'Kurtosis4':Kurtosis4,
         }
-
-    # time.sleep(1)
-
     firebaseDB.post('/FinalProject',data)
+
 
