@@ -167,8 +167,9 @@ def ReadCSV(df):
 
 def WTF():
     # Clear Database for New Run 
-    # firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
-    # firebaseDB.delete('/FinalProject','')
+    firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
+    firebaseDB.delete('/FinalProject','')
+    time.sleep(1)
     # print("Start")
     ReadCSV(data)
 

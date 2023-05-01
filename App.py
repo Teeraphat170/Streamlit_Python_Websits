@@ -26,12 +26,11 @@ import plotly.express as px
 
 st.set_page_config(layout="wide")
 
-# Start = st.button("Click here to start")
-# if Start:
-#     WTF()
+Start = st.button("Click here to start")
+if Start:
+    WTF()
 
-
-WTF()
+# WTF()
 
 
 
