@@ -60,6 +60,11 @@ warnings.filterwarnings("ignore")
 # fig = px.line(DataQ, x='Time',y=DataQ.columns[:-1])
 data = pd.read_csv('Component/Data/Dataset/TotalFile35_36.csv')
 data1 = pd.read_csv('Component/Data/Dataset/All134.csv')
+Ex = data.reset_index(drop=True)
+Ex1 = data1.reset_index(drop=True)
+
+new = Ex[["level_2","level_3","level_4","level_5","[LOGGING]","RD81DL96_1","2","3","4"]]
+
 
 data = {
   "calories": [420, 380, 390, 380, 400, 390],
@@ -84,45 +89,63 @@ df = pd.DataFrame(data)
 # st.line_chart(DataQ ,x=DataQ.index)
 st.set_page_config(layout="wide")
 
+
+
 with open('TestFolder/Test.css') as f: # Test.css with command prompt : TestFolder/Test.css with PowerShell
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
 
 # st.line_chart(df["calories"])
-
-col1, col2 = st.columns((30,30))
-with col1:
-    st.line_chart(df["calories"])
-with col2:
-    st.dataframe(df)
-
-col3, col4 = st.columns(2)
-with col3:  
-    fig = px.line(df, x = 'test',y = df.columns[:-1])
-    st.plotly_chart(fig,use_container_width=True, sharing="streamlit", theme="streamlit")  
-with col4:
-    Prediction1 = len(df[df['calories']==400])
-    Prediction_1 = len(df[df['duration']==50])
-    piechart = [Prediction1,Prediction_1]
-    detection = ['Normally','Anomaly']
-    fig = px.pie(values=piechart,names=detection)
-    st.plotly_chart(fig, use_container_width=True)
-
-
-
 add_selectbox = st.sidebar.selectbox(
     "How would you like to be contacted?",
-    ("data", "data1")
+    ("data1","data2" )
 )
 
-if add_selectbox:
-    st.write("datass")
-# Using "with" notation
-with st.sidebar:
-    add_radio = st.radio(
-        "Choose a shipping method",
-        ("Standard (5-15 days)", "Express (2-5 days)")
-    )
+if "data1" in add_selectbox: # If user selects Email  do 👇
+    data = pd.read_csv('Component/Data/Dataset/TotalFile35_36.csv')
+    Ex = data.reset_index(drop=True)
+else:
+    data1 = pd.read_csv('Component/Data/Dataset/All134.csv')
+    Ex = data1.reset_index(drop=True)
+
+st.markdown("# :green[Anomaly Detection Dashborad] ")
+st.markdown("#")
+def Test(Ex):
+    col1, col2 = st.columns((30,30))
+    with col1:
+        st.header("Line Chart")
+        st.line_chart(df["calories"])
+        # st.line_chart(Ex1["RD81DL96_1"])
+    with col2:
+        st.header("Dataframe")
+        # st.dataframe(df)
+        st.dataframe(Ex)
+
+    col3, col4 = st.columns(2)
+    with col3:  
+        fig = px.line(df, x = 'test',y = df.columns[:-1])
+        st.plotly_chart(fig,use_container_width=True, sharing="streamlit", theme="streamlit")  
+    with col4:
+        Prediction1 = len(df[df['calories']==400])
+        Prediction_1 = len(df[df['duration']==50])
+        piechart = [Prediction1,Prediction_1]
+        detection = ['Normally','Anomaly']
+        fig = px.pie(values=piechart,names=detection)
+
+        st.header("Pie Chart")
+        st.plotly_chart(fig, use_container_width=True)
+
+# Start = st.button("Click here to start")
+# if Start:
+#     Test(Ex)
+Test(Ex)
+
+# # Using "with" notation
+# with st.sidebar:
+#     add_radio = st.radio(
+#         "Choose a shipping method",
+#         ("Standard (5-15 days)", "Express (2-5 days)")
+#     )
 # col2.markdown(
 #     """
 #     <style>

@@ -4,6 +4,8 @@ import statistics
 import time
 import warnings
 import streamlit as st
+import pickle
+from datetime import datetime
 from scipy.stats import kurtosis
 from firebase import firebase
 from Predict import predict
@@ -18,7 +20,11 @@ data = pd.read_csv('Component/Data/Dataset/TotalFile35_36.csv')
 def ReadCSV(df):
     # print("Calculate")
     TestX = df
-    TestX = TestX.iloc[: , 1:] 
+    # TestX = TestX.iloc[: , 1:] 
+    TestX = TestX.iloc[: , 1:5]
+    
+    # count Time
+    start = time.time()
 
     # Set for 1 container
     placeholder = st.empty()
@@ -42,9 +48,10 @@ def ReadCSV(df):
             df2 = pd.DataFrame([total])
             Mean = pd.concat([Mean, df2], axis=1)
 
-        Mean.columns = ['Mean1','Mean2','Mean3','Mean4','Mean5',
-                        'Mean6','Mean7','Mean8','Mean9']
-        # print(Mean)
+        Mean.columns = ['Mean1','Mean2','Mean3','Mean4']
+        # Mean.columns = ['Mean1','Mean2','Mean3','Mean4','Mean5',
+        #                 'Mean6','Mean7','Mean8','Mean9']
+
 
         Median = pd.DataFrame()
         for x in scaled_newdf:
@@ -52,9 +59,9 @@ def ReadCSV(df):
             df2 = pd.DataFrame([total])
             Median = pd.concat([Median, df2], axis=1)
 
-        Median.columns = ['Median1','Median2','Median3','Median4','Median5',
-                          'Median6','Median7','Median8','Median9']
-        # print(Median)
+        Median.columns = ['Median1','Median2','Median3','Median4']
+        # Median.columns = ['Median1','Median2','Median3','Median4','Median5',
+        #                   'Median6','Median7','Median8','Median9']
 
         Std = pd.DataFrame()
         for x in scaled_newdf:
@@ -63,9 +70,9 @@ def ReadCSV(df):
             df2 = pd.DataFrame([total])
             Std = pd.concat([Std, df2], axis=1)
 
-        Std.columns = ['Std1','Std2','Std3','Std4',
-                       'Std5','Std6','Std7','Std8','Std9']
-        # print(Std)
+        Std.columns = ['Std1','Std2','Std3','Std4']
+        # Std.columns = ['Std1','Std2','Std3','Std4',
+        #                'Std5','Std6','Std7','Std8','Std9']
 
         Mode = pd.DataFrame()
         for x in scaled_newdf:
@@ -73,9 +80,9 @@ def ReadCSV(df):
             df2 = pd.DataFrame([total])
             Mode = pd.concat([Mode, df2], axis=1)
 
-        Mode.columns = ['Mode1','Mode2','Mode3','Mode4','Mode5',
-                        'Mode6','Mode7','Mode8','Mode9']
-        # print(Mode)
+        Mode.columns = ['Mode1','Mode2','Mode3','Mode4']
+        # Mode.columns = ['Mode1','Mode2','Mode3','Mode4','Mode5',
+        #                 'Mode6','Mode7','Mode8','Mode9']
 
         Kurt = pd.DataFrame()
         for x in scaled_newdf:
@@ -85,9 +92,10 @@ def ReadCSV(df):
             Kurt = pd.concat([Kurt, df2], axis=1)
 
         Kurt.columns = ['Kurtosis1','Kurtosis2','Kurtosis3',
-                        'Kurtosis4','Kurtosis5','Kurtosis6',
-                        'Kurtosis7','Kurtosis8','Kurtosis9'] # New way
-        # print(Kurt)
+                        'Kurtosis4']
+        # Kurt.columns = ['Kurtosis1','Kurtosis2','Kurtosis3',
+        #                 'Kurtosis4','Kurtosis5','Kurtosis6',
+        #                 'Kurtosis7','Kurtosis8','Kurtosis9']
 
         PtoP = pd.DataFrame()
         for x in scaled_newdf:
@@ -96,9 +104,9 @@ def ReadCSV(df):
             df2 = pd.DataFrame([total])
             PtoP = pd.concat([PtoP, df2], axis=1)
 
-        PtoP.columns = ['PToP1','PToP2','PToP3','PToP4',
-                        'PToP5','PToP6','PToP7','PToP8','PToP9']
-        # print(PtoP)
+        PtoP.columns = ['PToP1','PToP2','PToP3','PToP4']
+        # PtoP.columns = ['PToP1','PToP2','PToP3','PToP4',
+        #                 'PToP5','PToP6','PToP7','PToP8','PToP9']
 
         RMS = pd.DataFrame() 
         for x in scaled_newdf:
@@ -109,8 +117,9 @@ def ReadCSV(df):
             df2 = pd.DataFrame([total])
             RMS = pd.concat([RMS, df2], axis=1)
 
-        RMS.columns = ['RMS1','RMS2','RMS3','RMS4',
-                       'RMS5','RMS6','RMS7','RMS8','RMS9']
+        RMS.columns = ['RMS1','RMS2','RMS3','RMS4']
+        # RMS.columns = ['RMS1','RMS2','RMS3','RMS4',
+        #                'RMS5','RMS6','RMS7','RMS8','RMS9']
         # print(RMS)
 
         result = pd.concat([Mean, Median], axis=1)
@@ -136,10 +145,13 @@ def ReadCSV(df):
         Kurtosis4 = newresult.get("Kurtosis4")
 
 
+        # To predict
+        OKNG,timeX,prediction_proba,prediction = predict(newresult) #Supervised And IsolationForest
+        # print(OKNG,timeX,prediction_proba,prediction)
+
         # If_Not_use_database
-        okng,timeX,prediction_proba,prediction = predict(newresult) #Supervised And IsolationForest
         data = {
-            "Result": [okng],
+            "Result": [OKNG],
             "Time": [timeX],
             "Probability": [prediction_proba][0],
             "Prediction": [prediction][0],
@@ -154,22 +166,23 @@ def ReadCSV(df):
         # print(okng,timeX,prediction_proba[0],prediction[0],Std3,Std2,Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4) 
 
         # ToFirebase
-        ToFirebase(okng,timeX,prediction_proba,prediction,Std3,Std2,
-                   Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4,)
+        # ToFirebase(OKNG,timeX,prediction_proba,prediction,Std3,Std2,
+        #            Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4,)
           
         with placeholder.container():
             Run(IfNotUseDatabase)
 
         First = First + 5
         Last = Last + 5
-
-    return okng,timeX,prediction_proba,prediction
+        # end = time.time()
+        # print("Time use : ",end - start)
+    return OKNG,timeX,prediction_proba,prediction
 
 def WTF():
     # Clear Database for New Run 
     firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
     firebaseDB.delete('/FinalProject','')
-    time.sleep(1)
+    # time.sleep(1)
     # print("Start")
     ReadCSV(data)
 
@@ -177,3 +190,5 @@ def WTF():
 # Start = st.button("Click here to start")
 # if Start:
 #     WTF()
+
+# WTF()

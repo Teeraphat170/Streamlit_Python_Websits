@@ -19,5 +19,6 @@ def predict(TestX):
         OKNG = 'OK'
         # OKNG = 'NG'
 
+    
     return OKNG,time,prediction_proba,prediction 
 

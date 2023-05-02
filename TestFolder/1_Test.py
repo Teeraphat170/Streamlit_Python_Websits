@@ -48,8 +48,8 @@ warnings.filterwarnings("ignore")
 # """
 # )
 # st.markdown("<h1 style='text-align: center; color: white;'>My Dashboard</h1>", unsafe_allow_html=True)
-firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
-firebaseDB.delete('/FinalProject','')
+# firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
+# firebaseDB.delete('/FinalProject','')
 
 # test = st.button('Say hello')
 # if test:
@@ -76,3 +76,43 @@ firebaseDB.delete('/FinalProject','')
 
 # with col2:
 #     st.markdown(f"<div style='{col2_style}'>Column 2</div>", unsafe_allow_html=True)
+
+data = pd.read_csv('Component/Data/Dataset/TotalFile35_36.csv')
+data1 = pd.read_csv('Component/Data/Dataset/All134.csv')
+# Ex = data.reset_index(drop=True)
+# Ex1 = data1.reset_index(drop=True)
+
+# new = Ex[["level_2","level_3","level_4","level_5","[LOGGING]","RD81DL96_1","2","3","4"]]
+# print(new)
+
+data = data.iloc[: , 1:5] 
+    
+# count Time
+start = time.time()
+
+# Add new
+
+##### Sliding Windows
+First,Last = 0,390
+
+while Last <= len(data): 
+   
+    Position = data.iloc[First:Last]
+    
+    # If not use scale data
+    scaled_newdf = Position
+
+    Mean = pd.DataFrame()
+    for x in scaled_newdf:
+        total = scaled_newdf[x].mean()
+        df2 = pd.DataFrame([total])
+        Mean = pd.concat([Mean, df2], axis=1)
+    # print(Mean)
+    Mean.columns = ['Mean1','Mean2','Mean3','Mean4']
+    First = First + 5
+    Last = Last + 5
+
+
+print(Mean)
+end = time.time()
+print("Time use : ",end - start)
