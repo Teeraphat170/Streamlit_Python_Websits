@@ -95,50 +95,52 @@ with open('TestFolder/Test.css') as f: # Test.css with command prompt : TestFold
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
 
-# st.line_chart(df["calories"])
-add_selectbox = st.sidebar.selectbox(
-    "How would you like to be contacted?",
-    ("data1","data2" )
-)
+def Test(Ex):
+      col1, col2 = st.columns((30,30))
+      with col1:
+          st.header("Line Chart")
+          st.line_chart(df["calories"])
+          # st.line_chart(Ex1["RD81DL96_1"])
+      with col2:
+          st.header("Dataframe")
+          # st.dataframe(df)
+          st.dataframe(Ex)
 
-if "data1" in add_selectbox: # If user selects Email  do 👇
+      col3, col4 = st.columns(2)
+      with col3:  
+          fig = px.line(df, x = 'test',y = df.columns[:-1])
+          st.plotly_chart(fig,use_container_width=True, sharing="streamlit", theme="streamlit")  
+      with col4:
+          Prediction1 = len(df[df['calories']==400])
+          Prediction_1 = len(df[df['duration']==50])
+          piechart = [Prediction1,Prediction_1]
+          detection = ['Normally','Anomaly']
+          fig = px.pie(values=piechart,names=detection)
+
+          st.header("Pie Chart")
+          st.plotly_chart(fig, use_container_width=True)
+
+tab1, tab2 ,tab3= st.tabs(["🎉 Welcome", "📈 Dashboard","⚙️ Setting"])
+with tab1:
+  st.markdown("# :green[Welcome] ")
+
+with tab3:
+  add_selectbox = st.selectbox(
+    "Change Dataset",
+    ("data1","data2" )
+  )
+
+  if "data1" in add_selectbox: # If user selects Email  do 👇
     data = pd.read_csv('Component/Data/Dataset/TotalFile35_36.csv')
     Ex = data.reset_index(drop=True)
-else:
+  else:
     data1 = pd.read_csv('Component/Data/Dataset/All134.csv')
     Ex = data1.reset_index(drop=True)
 
-st.markdown("# :green[Anomaly Detection Dashborad] ")
-st.markdown("#")
-def Test(Ex):
-    col1, col2 = st.columns((30,30))
-    with col1:
-        st.header("Line Chart")
-        st.line_chart(df["calories"])
-        # st.line_chart(Ex1["RD81DL96_1"])
-    with col2:
-        st.header("Dataframe")
-        # st.dataframe(df)
-        st.dataframe(Ex)
-
-    col3, col4 = st.columns(2)
-    with col3:  
-        fig = px.line(df, x = 'test',y = df.columns[:-1])
-        st.plotly_chart(fig,use_container_width=True, sharing="streamlit", theme="streamlit")  
-    with col4:
-        Prediction1 = len(df[df['calories']==400])
-        Prediction_1 = len(df[df['duration']==50])
-        piechart = [Prediction1,Prediction_1]
-        detection = ['Normally','Anomaly']
-        fig = px.pie(values=piechart,names=detection)
-
-        st.header("Pie Chart")
-        st.plotly_chart(fig, use_container_width=True)
-
-# Start = st.button("Click here to start")
-# if Start:
-#     Test(Ex)
-Test(Ex)
+with tab2:
+  st.markdown("# :green[Anomaly Detection Dashborad] 📈")
+  st.markdown("#")
+  Test(Ex)
 
 # # Using "with" notation
 # with st.sidebar:

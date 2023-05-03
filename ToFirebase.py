@@ -62,5 +62,5 @@ def ToFirebase(OKNG,timeX,prediction_proba,prediction,Std3,Std2,Mean2,Std1,PToP1
             'Kurtosis4':Kurtosis4,
         }
     firebaseDB.post('/FinalProject',data)
-    print(data)
+    # print(data)
 
