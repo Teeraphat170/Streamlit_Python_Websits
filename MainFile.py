@@ -17,7 +17,7 @@ warnings.filterwarnings("ignore")
 data = pd.read_csv('Component/Data/Dataset/TotalFile35_36.csv')
 
 # Main
-def ReadCSV(df):
+def MainProcess(df):
     # print("Calculate")
     TestX = df
     # TestX = TestX.iloc[: , 1:] 
@@ -150,28 +150,28 @@ def ReadCSV(df):
         # print(OKNG,timeX,prediction_proba,prediction)
 
         # If_Not_use_database
-        # data = {
-        #     "Result": [OKNG],
-        #     "Time": [timeX],
-        #     "Probability": [prediction_proba][0],
-        #     "Prediction": [prediction][0],
-        #     }
-        # result_for_predict = pd.DataFrame(data)
-        # result_for_predict = pd.concat([result_for_predict, newresult], axis=1)
-        # IfNotUseDatabase = pd.concat([IfNotUseDatabase,result_for_predict], axis=0)
-        # IfNotUseDatabase = IfNotUseDatabase.reset_index(drop=True)
+        data = {
+            "Result": [OKNG],
+            "Time": [timeX],
+            "Probability": [prediction_proba][0],
+            "Prediction": [prediction][0],
+            }
+        result_for_predict = pd.DataFrame(data)
+        result_for_predict = pd.concat([result_for_predict, newresult], axis=1)
+        IfNotUseDatabase = pd.concat([IfNotUseDatabase,result_for_predict], axis=0)
+        IfNotUseDatabase = IfNotUseDatabase.reset_index(drop=True)
         # print(IfNotUseDatabase)
 
         #if wanna see Result
         # print(okng,timeX,prediction_proba[0],prediction[0],Std3,Std2,Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4) 
 
         # ToFirebase
-        ToFirebase(OKNG,timeX,prediction_proba,prediction,Std3,Std2,
-                   Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4,)
+        # ToFirebase(OKNG,timeX,prediction_proba,prediction,Std3,Std2,
+        #            Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4,)
           
         with placeholder.container():
-            # Run(IfNotUseDatabase)
-            Run()
+            Run(IfNotUseDatabase)
+            # Run()
 
         First = First + 10 # or + 5
         Last = Last + 10 # or + 5
@@ -183,10 +183,11 @@ def WTF():
     # Clear Database for New Run 
     firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
     firebaseDB.delete('/FinalProject','')
-    # time.sleep(1)
     # print("Start")
-    ReadCSV(data)
+    MainProcess(data)
 
+
+# For Test
 # st.set_page_config(layout="wide")
 # Start = st.button("Click here to start")
 # if Start:
