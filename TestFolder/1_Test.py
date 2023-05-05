@@ -85,34 +85,48 @@ data1 = pd.read_csv('Component/Data/Dataset/All134.csv')
 # new = Ex[["level_2","level_3","level_4","level_5","[LOGGING]","RD81DL96_1","2","3","4"]]
 # print(new)
 
-data = data.iloc[: , 1:5] 
+# data = data.iloc[: , 1:5] 
     
-# count Time
-start = time.time()
+# # count Time
+# start = time.time()
 
-# Add new
+# # Add new
 
-##### Sliding Windows
-First,Last = 0,390
+# ##### Sliding Windows
+# First,Last = 0,390
 
-while Last <= len(data): 
+# while Last <= len(data): 
    
-    Position = data.iloc[First:Last]
+#     Position = data.iloc[First:Last]
     
-    # If not use scale data
-    scaled_newdf = Position
+#     # If not use scale data
+#     scaled_newdf = Position
 
-    Mean = pd.DataFrame()
-    for x in scaled_newdf:
-        total = scaled_newdf[x].mean()
-        df2 = pd.DataFrame([total])
-        Mean = pd.concat([Mean, df2], axis=1)
-    # print(Mean)
-    Mean.columns = ['Mean1','Mean2','Mean3','Mean4']
-    First = First + 5
-    Last = Last + 5
+#     Mean = pd.DataFrame()
+#     for x in scaled_newdf:
+#         total = scaled_newdf[x].mean()
+#         df2 = pd.DataFrame([total])
+#         Mean = pd.concat([Mean, df2], axis=1)
+#     # print(Mean)
+#     Mean.columns = ['Mean1','Mean2','Mean3','Mean4']
+#     First = First + 5
+#     Last = Last + 5
 
 
-print(Mean)
-end = time.time()
-print("Time use : ",end - start)
+# print(Mean)
+# end = time.time()
+# print("Time use : ",end - start)
+import yaml
+from yaml.loader import SafeLoader
+import streamlit_authenticator as stauth 
+
+with open('../config.yaml') as file:
+    config = yaml.load(file, Loader=SafeLoader)
+
+authenticator = stauth.Authenticate(
+    config['credentials'],
+    config['cookie']['name'],
+    config['cookie']['key'],
+    config['cookie']['expiry_days'],
+    config['preauthorized']
+)

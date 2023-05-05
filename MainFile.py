@@ -14,7 +14,7 @@ from Chart import Run
 warnings.filterwarnings("ignore")
 
 # data = pd.read_csv('Data/Dataset/All134.csv')
-data = pd.read_csv('Component/Data/Dataset/TotalFile35_36.csv')
+# data = pd.read_csv('Component/Data/Dataset/TotalFile35_36.csv')
 
 # Main
 def MainProcess(df):
@@ -179,10 +179,11 @@ def MainProcess(df):
         # print("Time use : ",end - start)
     return OKNG,timeX,prediction_proba,prediction
 
-def WTF():
+def WTF(data):
     # Clear Database for New Run 
-    firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
-    firebaseDB.delete('/FinalProject','')
+    # firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
+    # firebaseDB.delete('/FinalProject','')
+
     # print("Start")
     MainProcess(data)
 

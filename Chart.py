@@ -49,31 +49,42 @@ def Run(IfNotUseDatabase):
         st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
     # Make Realtime Streamlit
-    st.markdown("# :green[Anomaly Detection Dashborad] ")
-    st.markdown("#")
-    col1, col2 = st.columns((30,30))
-    with col1:
-        st.header("Line Chart")
-        st.line_chart(DataQ["Prediction"])
-    with col2:
-        st.header("Dataframe")
-        st.dataframe(DataQ)
 
-    col2, col3 = st.columns((30,30))
-    with col2:
-        fig = px.line(DataQ, x = 'Time',y = DataQ.columns[2:-1])
-        st.plotly_chart(fig, use_container_width=True)
-    with col3:
-        # fig = px.line(DataQ, x = 'Time',y = DataQ.columns[:-1])
-        # st.plotly_chart(fig)
 
-        Prediction1 = len(DataQ[DataQ['Prediction']==1])
-        Prediction_1 = len(DataQ[DataQ['Prediction']==-1])
-        piechart = [Prediction1,Prediction_1]
-        detection = ['Normally','Anomaly']
-        fig = px.pie(values=piechart,names=detection)
-        st.header("Pie Chart")
-        st.plotly_chart(fig, use_container_width=True)
+
+
+    tab1, tab2, tab3 = st.tabs(["🎉 Welcome", "📈 Dashboard", "⚙️ Setting"])
+    with tab1:
+        st.markdown("# :green[Welcome] ")
+    with tab3:
+        st.markdown("# :green[Anomaly Detection Dashborad] ")
+        st.markdown("#")
+    with tab2:
+        st.markdown("# :green[Anomaly Detection Dashborad] ")
+        st.markdown("#")
+        col1, col2 = st.columns((30,30))
+        with col1:
+            st.header("Line Chart")
+            st.line_chart(DataQ["Prediction"])
+        with col2:
+            st.header("Dataframe")
+            st.dataframe(DataQ)
+
+        col2, col3 = st.columns((30,30))
+        with col2:
+            fig = px.line(DataQ, x = 'Time',y = DataQ.columns[2:-1])
+            st.plotly_chart(fig, use_container_width=True)
+        with col3:
+            # fig = px.line(DataQ, x = 'Time',y = DataQ.columns[:-1])
+            # st.plotly_chart(fig)
+
+            Prediction1 = len(DataQ[DataQ['Prediction']==1])
+            Prediction_1 = len(DataQ[DataQ['Prediction']==-1])
+            piechart = [Prediction1,Prediction_1]
+            detection = ['Normally','Anomaly']
+            fig = px.pie(values=piechart,names=detection)
+            st.header("Pie Chart")
+            st.plotly_chart(fig, use_container_width=True)
 
     
 
