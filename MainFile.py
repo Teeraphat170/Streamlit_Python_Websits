@@ -5,6 +5,7 @@ import time
 import warnings
 import streamlit as st
 import pickle
+import plotly.express as px
 from datetime import datetime
 from scipy.stats import kurtosis
 from firebase import firebase
@@ -170,22 +171,81 @@ def MainProcess(df):
         #            Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4,)
           
         with placeholder.container():
-            Run(IfNotUseDatabase)
+            DataQ = Run(IfNotUseDatabase)
             # Run()
 
         First = First + 10 # or + 5
         Last = Last + 10 # or + 5
         # end = time.time()
         # print("Time use : ",end - start)
+    # print(DataQ)
+    
+    placeholder.empty()
+    with open('Style.css') as f: # Test.css with command prompt : TestFolder/Test.css with PowerShell
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
+    # Make Realtime Streamlit
+    tab1, tab2, tab3 = st.tabs(["📈 Dashboard", "📑 Data", "⚙️ Setting"])
+    with tab2:
+        st.header("Dataframe")
+        XXXX = st.selectbox(
+                    "Change Dataset",(DataQ["Time"])
+                    )
+        st.dataframe(DataQ.loc[DataQ['Time'] == DataQ["Time"]])
+
+
+    with tab3:
+        st.markdown("# :green[Anomaly Detection Dashborad] ")
+        st.markdown("#")
+
+
+
+    with tab1:
+        st.markdown("# :green[Anomaly Detection Dashborad] ")
+        st.markdown("#")
+
+        col1, col2 = st.columns((30,30))
+        with col1:
+            st.header("Line Chart")
+            st.line_chart(DataQ["Prediction"])
+        with col2:
+            Prediction1 = len(DataQ[DataQ['Prediction']==1])
+            Prediction_1 = len(DataQ[DataQ['Prediction']==-1])
+            piechart = [Prediction1,Prediction_1]
+            detection = ['Normally','Anomaly']
+            fig = px.pie(values=piechart,names=detection)
+            st.header("Pie Chart")
+            st.plotly_chart(fig, use_container_width=True)
+
+        col2, col3 = st.columns((30,30))
+        with col2:
+            fig = px.line(DataQ, x = 'Time',y = DataQ.columns[2:-6])
+            st.plotly_chart(fig, use_container_width=True)
+        with col3:
+            fig = px.line(DataQ, x = 'Time',y = DataQ.columns[7:-1])
+            st.plotly_chart(fig, use_container_width=True)
     return OKNG,timeX,prediction_proba,prediction
 
-def WTF(data):
+def WTF():
     # Clear Database for New Run 
     # firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
     # firebaseDB.delete('/FinalProject','')
+    with st.sidebar:
+        add_selectbox = st.selectbox(
+                "Change Dataset",("data1","data2" )
+                )
+                
+        if "data1" in add_selectbox: # If user selects Email  do 👇
+            data = pd.read_csv('Component/Data/Dataset/TotalFile35_36.csv')
+            Ex = data.reset_index(drop=True)
+        else:
+            data = pd.read_csv('Component/Data/Dataset/All134.csv')
+            Ex = data.reset_index(drop=True)
 
-    # print("Start")
-    MainProcess(data)
+    Start = st.sidebar.button("Click here to start")
+    if Start:
+        # print("Start")
+        MainProcess(data)
 
 
 # For Test
