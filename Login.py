@@ -35,39 +35,12 @@ def Login():
 
         st.sidebar.title(f"Welcome {name}")
         authenticator.logout("Logout", "sidebar")
-
-        placeholder = st.empty()
-        with placeholder.container():
-            tab1, tab2, tab3 = st.tabs(["🎉 Welcome", "📈 Dashboard", "⚙️ Setting"])
-            with tab1:
-                st.markdown("# :green[Welcome] ")
-            with tab3:
-                st.markdown("# :green[Anomaly Detection Dashborad] ")
-                st.markdown("#")
-            with tab2:
-                st.markdown("# :green[Anomaly Detection Dashborad] ")
-                st.markdown("#")
-        placeholder.empty()
         BeforeMainProcess()
-        # with st.sidebar:
-        #     add_selectbox = st.selectbox(
-        #             "Change Dataset",("data1","data2" )
-        #             )
-                
-        #     if "data1" in add_selectbox: # If user selects Email  do 👇
-        #         data = pd.read_csv('Component/Data/Dataset/TotalFile35_36.csv')
-        #         Ex = data.reset_index(drop=True)
-        #     else:
-        #         data = pd.read_csv('Component/Data/Dataset/All134.csv')
-        #         Ex = data.reset_index(drop=True)
+ 
 
         # Start = st.sidebar.button("Click here to start")
         # if Start:
         #     WTF(data) 
 
-
-        # Stop = st.sidebar.button("Click here to Stop")
-        # if Stop:
-        #     st.stop() 
         
         

@@ -167,8 +167,8 @@ def MainProcess(df):
         # print(okng,timeX,prediction_proba[0],prediction[0],Std3,Std2,Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4) 
 
         # ToFirebase
-        # ToFirebase(OKNG,timeX,prediction_proba,prediction,Std3,Std2,
-        #            Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4,)
+        ToFirebase(OKNG,timeX,prediction_proba,prediction,Std3,Std2,
+                   Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4,)
           
         with placeholder.container():
             DataQ = Run(IfNotUseDatabase)
@@ -184,8 +184,8 @@ def MainProcess(df):
 
 def BeforeMainProcess():
     # Clear Database for New Run 
-    # firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
-    # firebaseDB.delete('/FinalProject','')
+    firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
+    firebaseDB.delete('/FinalProject','')
     placeholder = st.empty()
     with st.sidebar:
         add_selectbox = st.selectbox(
@@ -205,20 +205,23 @@ def BeforeMainProcess():
         elif "data6" in add_selectbox:
             data = pd.read_csv('Component/Data/Dataset/All134.csv')
 
-    # tab1, tab2, tab3 = st.tabs(["🎉 Welcome", "📈 Dashboard", "⚙️ Setting"])
-    # with tab1:
-    #     st.markdown("# :green[Welcome] ")
-    # with tab3:
-    #     st.markdown("# :green[Anomaly Detection Dashborad] ")
-    #     st.markdown("#")
-    # with tab2:
-    #     st.markdown("# :green[Anomaly Detection Dashborad] ")
-    #     st.markdown("#")
-
+    placeholder = st.empty()
+    with placeholder.container():
+        tab1, tab2, tab3 = st.tabs(["🎉 Welcome", "📈 Dashboard", "⚙️ Setting"])
+        with tab1:
+            st.markdown("# :green[Welcome] ")
+        with tab3:
+            st.markdown("# :green[Anomaly Detection Dashborad] ")
+            st.markdown("#")
+        with tab2:
+            st.markdown("# :green[Anomaly Detection Dashborad] ")
+            st.markdown("#")
+        
 
     Start = st.sidebar.button("Click here to start")
     if Start:
         # print("Start")
+        placeholder.empty()
         MainProcess(data)
 
     
