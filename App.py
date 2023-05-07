@@ -1,6 +1,6 @@
 from datetime import datetime
 from scipy.stats import kurtosis
-from MainFile import MainProcess,WTF
+from MainFile import MainProcess,BeforeMainProcess
 from Login import Login
 from threading import Thread
 from firebase import firebase
@@ -30,15 +30,12 @@ st.set_page_config(page_icon=":bar_chart:", layout="wide")
 # Start = st.button("Click here to start")
 # if Start:
 #     Login()
-placeholder = st.empty() 
-with placeholder.container():
-    Login()
+Login()
 
 hide_st_style = """
             <style>
             #MainMenu {visibility: hidden;}
             footer {visibility: hidden;}
-            header {visibility: hidden;}
             </style>
             """
 st.markdown(hide_st_style, unsafe_allow_html=True)

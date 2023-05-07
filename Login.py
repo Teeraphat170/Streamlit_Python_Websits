@@ -1,6 +1,6 @@
 import pickle
 from pathlib import Path
-from MainFile import WTF
+from MainFile import BeforeMainProcess
 import pandas as pd  # pip install pandas openpyxl
 import plotly.express as px  # pip install plotly-express
 import streamlit as st  # pip install streamlit
@@ -35,7 +35,20 @@ def Login():
 
         st.sidebar.title(f"Welcome {name}")
         authenticator.logout("Logout", "sidebar")
-        WTF()
+
+        placeholder = st.empty()
+        with placeholder.container():
+            tab1, tab2, tab3 = st.tabs(["🎉 Welcome", "📈 Dashboard", "⚙️ Setting"])
+            with tab1:
+                st.markdown("# :green[Welcome] ")
+            with tab3:
+                st.markdown("# :green[Anomaly Detection Dashborad] ")
+                st.markdown("#")
+            with tab2:
+                st.markdown("# :green[Anomaly Detection Dashborad] ")
+                st.markdown("#")
+        placeholder.empty()
+        BeforeMainProcess()
         # with st.sidebar:
         #     add_selectbox = st.selectbox(
         #             "Change Dataset",("data1","data2" )
@@ -52,15 +65,6 @@ def Login():
         # if Start:
         #     WTF(data) 
 
-        # tab1, tab2, tab3 = st.tabs(["🎉 Welcome", "📈 Dashboard", "⚙️ Setting"])
-        # with tab1:
-        #     st.markdown("# :green[Welcome] ")
-        # with tab3:
-        #     st.markdown("# :green[Anomaly Detection Dashborad] ")
-        #     st.markdown("#")
-        # with tab2:
-        #     st.markdown("# :green[Anomaly Detection Dashborad] ")
-        #     st.markdown("#")
 
         # Stop = st.sidebar.button("Click here to Stop")
         # if Stop:

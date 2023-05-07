@@ -28,7 +28,7 @@ def MainProcess(df):
     start = time.time()
 
     # Set for 1 container
-    placeholder = st.empty()
+    placeholder = st.empty() 
 
     # Add new
     IfNotUseDatabase = pd.DataFrame()
@@ -179,75 +179,49 @@ def MainProcess(df):
         # end = time.time()
         # print("Time use : ",end - start)
     # print(DataQ)
-    
-    placeholder.empty()
-    with open('Style.css') as f: # Test.css with command prompt : TestFolder/Test.css with PowerShell
-        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
-
-    # Make Realtime Streamlit
-    tab1, tab2, tab3 = st.tabs(["📈 Dashboard", "📑 Data", "⚙️ Setting"])
-    with tab2:
-        st.header("Dataframe")
-        XXXX = st.selectbox(
-                    "Change Dataset",(DataQ["Time"])
-                    )
-        st.dataframe(DataQ.loc[DataQ['Time'] == DataQ["Time"]])
-
-
-    with tab3:
-        st.markdown("# :green[Anomaly Detection Dashborad] ")
-        st.markdown("#")
-
-
-
-    with tab1:
-        st.markdown("# :green[Anomaly Detection Dashborad] ")
-        st.markdown("#")
-
-        col1, col2 = st.columns((30,30))
-        with col1:
-            st.header("Line Chart")
-            st.line_chart(DataQ["Prediction"])
-        with col2:
-            Prediction1 = len(DataQ[DataQ['Prediction']==1])
-            Prediction_1 = len(DataQ[DataQ['Prediction']==-1])
-            piechart = [Prediction1,Prediction_1]
-            detection = ['Normally','Anomaly']
-            fig = px.pie(values=piechart,names=detection)
-            st.header("Pie Chart")
-            st.plotly_chart(fig, use_container_width=True)
-
-        col2, col3 = st.columns((30,30))
-        with col2:
-            fig = px.line(DataQ, x = 'Time',y = DataQ.columns[2:-6])
-            st.plotly_chart(fig, use_container_width=True)
-        with col3:
-            fig = px.line(DataQ, x = 'Time',y = DataQ.columns[7:-1])
-            st.plotly_chart(fig, use_container_width=True)
+    # placeholder.empty()
     return OKNG,timeX,prediction_proba,prediction
 
-def WTF():
+def BeforeMainProcess():
     # Clear Database for New Run 
     # firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
     # firebaseDB.delete('/FinalProject','')
+    placeholder = st.empty()
     with st.sidebar:
         add_selectbox = st.selectbox(
-                "Change Dataset",("data1","data2" )
-                )
-                
-        if "data1" in add_selectbox: # If user selects Email  do 👇
-            data = pd.read_csv('Component/Data/Dataset/TotalFile35_36.csv')
-            Ex = data.reset_index(drop=True)
-        else:
+                "Change Dataset",("data1","data2","data3","data4","data5","data6")
+            )
+        
+        if "data1" in add_selectbox: 
+            data = pd.read_csv('Component/Data/Dataset/TotalFile35_36.csv') # Ex = data.reset_index(drop=True)
+        elif "data2" in add_selectbox:
+            data = pd.read_csv('Component/Data/Dataset/TotalFile36_37.csv') # Ex = data.reset_index(drop=True)
+        elif "data3" in add_selectbox:
+            data = pd.read_csv('Component/Data/Dataset/TotalFile46_47.csv')
+        elif "data4" in add_selectbox:
+            data = pd.read_csv('Component/Data/Dataset/TotalFile65_80.csv')
+        elif "data5" in add_selectbox:
+            data = pd.read_csv('Component/Data/Dataset/TotalFile98_9c.csv')
+        elif "data6" in add_selectbox:
             data = pd.read_csv('Component/Data/Dataset/All134.csv')
-            Ex = data.reset_index(drop=True)
+
+    # tab1, tab2, tab3 = st.tabs(["🎉 Welcome", "📈 Dashboard", "⚙️ Setting"])
+    # with tab1:
+    #     st.markdown("# :green[Welcome] ")
+    # with tab3:
+    #     st.markdown("# :green[Anomaly Detection Dashborad] ")
+    #     st.markdown("#")
+    # with tab2:
+    #     st.markdown("# :green[Anomaly Detection Dashborad] ")
+    #     st.markdown("#")
+
 
     Start = st.sidebar.button("Click here to start")
     if Start:
         # print("Start")
         MainProcess(data)
 
-
+    
 # For Test
 # st.set_page_config(layout="wide")
 # Start = st.button("Click here to start")
