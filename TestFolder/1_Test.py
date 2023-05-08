@@ -16,6 +16,7 @@ import time
 from datetime import datetime
 from scipy.stats import kurtosis
 from firebase import firebase
+import streamlit_authenticator as stauth
 from firebase_admin import db
 import warnings
 warnings.filterwarnings("ignore")
@@ -116,17 +117,37 @@ data1 = pd.read_csv('Component/Data/Dataset/All134.csv')
 # print(Mean)
 # end = time.time()
 # print("Time use : ",end - start)
-import yaml
-from yaml.loader import SafeLoader
-import streamlit_authenticator as stauth 
+# import yaml
+# from yaml.loader import SafeLoader
+# import streamlit_authenticator as stauth 
 
-with open('../config.yaml') as file:
-    config = yaml.load(file, Loader=SafeLoader)
+# with open('../config.yaml') as file:
+#     config = yaml.load(file, Loader=SafeLoader)
 
-authenticator = stauth.Authenticate(
-    config['credentials'],
-    config['cookie']['name'],
-    config['cookie']['key'],
-    config['cookie']['expiry_days'],
-    config['preauthorized']
-)
+# authenticator = stauth.Authenticate(
+#     config['credentials'],
+#     config['cookie']['name'],
+#     config['cookie']['key'],
+#     config['cookie']['expiry_days'],
+#     config['preauthorized']
+# )
+
+# import string
+# import random
+
+# xx = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase, k=5))
+# print ("grgrg:{}".format(xx))
+# import streamlit as st
+
+# st.title('Counter Example')
+# if 'count' not in st.session_state:
+#     st.session_state.count = 0
+
+# increment = st.button('Increment')
+# if increment:
+#     st.session_state.count += 1
+
+# st.write('Count = ', st.session_state.count)
+
+hashed_passwords = stauth.Hasher(['abc', 'def']).generate()
+print(hashed_passwords)

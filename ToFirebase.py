@@ -4,7 +4,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 
-def ToFirebase(OKNG,timeX,prediction_proba,prediction,Std3,Std2,Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4):
+def ToFirebase(OKNG,timeX,prediction_proba,prediction,Std3,Std2,Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4,Name_for_database):
     firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
 
     prediction_proba = prediction_proba[0]
@@ -61,6 +61,7 @@ def ToFirebase(OKNG,timeX,prediction_proba,prediction,Std3,Std2,Mean2,Std1,PToP1
             'Kurtosis1':Kurtosis1,
             'Kurtosis4':Kurtosis4,
         }
-    firebaseDB.post('/FinalProject',data)
+    firebaseDB.post('/{}'.format(Name_for_database),data)
+    # firebaseDB.post('/FinalProject',data)
     # print(data)
 

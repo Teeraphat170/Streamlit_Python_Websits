@@ -4,6 +4,8 @@ from MainFile import BeforeMainProcess
 import pandas as pd  # pip install pandas openpyxl
 import plotly.express as px  # pip install plotly-express
 import streamlit as st  # pip install streamlit
+import yaml
+from yaml.loader import SafeLoader
 import streamlit_authenticator as stauth  # pip install streamlit-authenticator
 
 
@@ -25,22 +27,20 @@ def Login():
 
     name, authentication_status, username = authenticator.login("Login", "main")
 
-    if authentication_status == False:
+    if st.session_state["authentication_status"] == False:
         st.error("Username/password is incorrect")
 
-    if authentication_status == None:
+    if st.session_state["authentication_status"] == None:
         st.warning("Please enter your username and password")
 
-    if authentication_status:
+    if st.session_state["authentication_status"]:
 
-        st.sidebar.title(f"Welcome {name}")
+        st.sidebar.title(f'Welcome *{st.session_state["name"]}*')
         authenticator.logout("Logout", "sidebar")
         BeforeMainProcess()
  
 
-        # Start = st.sidebar.button("Click here to start")
-        # if Start:
-        #     WTF(data) 
+#         # Start = st.sidebar.button("Click here to start")
+#         # if Start:
+#         #     WTF(data) 
 
-        
-        

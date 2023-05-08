@@ -5,15 +5,15 @@ import streamlit as st
 import warnings
 warnings.filterwarnings("ignore")
 
-
-def Run(IfNotUseDatabase):
+def Run(IfNotUseDatabase,Name_for_database):
     # print("Chart")
 
     df = pd.DataFrame()
 
     # From database
     firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
-    result = firebaseDB.get('/FinalProject', '')
+    result = firebaseDB.get('/{}'.format(Name_for_database), '')
+    # result = firebaseDB.get('/FinalProject', '')
     for key, value in result.items():
         Prediction = value["Prediction"]
         Probability = value["Probability"]
@@ -52,7 +52,7 @@ def Run(IfNotUseDatabase):
     tab1, tab2, tab3 = st.tabs(["📈 Dashboard", "📑 Data", "⚙️ Setting"])
     with tab2:
         
-        col1, col2, col3 = st.columns((50,5,20))
+        col1, col2, col3 = st.columns((60,5,20))
         with col1:
             st.header("Dataframe")
             st.dataframe(DataQ)
@@ -62,14 +62,8 @@ def Run(IfNotUseDatabase):
             st.header("Result")
             st.dataframe(df["Result"])
 
-    with tab3:
-        st.markdown("# :green[Anomaly Detection Dashborad] ")
-        st.markdown("#")
-
-
-
     with tab1:
-        st.markdown("# :green[Anomaly Detection Dashborad] ")
+        st.markdown("# :black[Anomaly Detection Dashborad] ")
         st.markdown("#")
 
         col1, col2 = st.columns((30,30))

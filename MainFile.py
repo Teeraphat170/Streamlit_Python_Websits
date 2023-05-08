@@ -6,6 +6,9 @@ import warnings
 import streamlit as st
 import pickle
 import plotly.express as px
+import string
+import random
+from PIL import Image
 from datetime import datetime
 from scipy.stats import kurtosis
 from firebase import firebase
@@ -32,6 +35,9 @@ def MainProcess(df):
 
     # Add new
     IfNotUseDatabase = pd.DataFrame()
+
+    # Name for dataset
+    Name_for_database = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase, k=10))
 
     ###### Sliding Windows
     First,Last = 0,390
@@ -168,10 +174,10 @@ def MainProcess(df):
 
         # ToFirebase
         ToFirebase(OKNG,timeX,prediction_proba,prediction,Std3,Std2,
-                   Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4,)
+                   Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4,Name_for_database)
           
         with placeholder.container():
-            DataQ = Run(IfNotUseDatabase)
+            DataQ = Run(IfNotUseDatabase,Name_for_database)
             # Run()
 
         First = First + 10 # or + 5
@@ -182,11 +188,9 @@ def MainProcess(df):
     # placeholder.empty()
     return OKNG,timeX,prediction_proba,prediction
 
+
 def BeforeMainProcess():
     # Clear Database for New Run 
-    firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
-    firebaseDB.delete('/FinalProject','')
-    placeholder = st.empty()
     with st.sidebar:
         add_selectbox = st.selectbox(
                 "Change Dataset",("data1","data2","data3","data4","data5","data6")
@@ -207,17 +211,28 @@ def BeforeMainProcess():
 
     placeholder = st.empty()
     with placeholder.container():
-        tab1, tab2, tab3 = st.tabs(["🎉 Welcome", "📈 Dashboard", "⚙️ Setting"])
+        tab1, tab3 = st.tabs(["🎉 Welcome", "⚙️ Setting"])
         with tab1:
-            st.markdown("# :green[Welcome] ")
-        with tab3:
-            st.markdown("# :green[Anomaly Detection Dashborad] ")
-            st.markdown("#")
-        with tab2:
-            st.markdown("# :green[Anomaly Detection Dashborad] ")
-            st.markdown("#")
-        
+            st.markdown("# :black[คำอธิบายโปรเจค] ")
+            col1, col2, col3 = st.columns([1.5,1,1])
+            with col1:
+                image = Image.open('Component/Picture/R04CPU.png')
+                st.image(image, caption='R04CPU')
+            with col2:
+                st.write("")
+                st.write("")
+                st.write("สำหรับหน้าเว็บนี้จะเป็น Dashboard ไว้ใช้สำหรับดูและตรวจสอบผลการทำงานของ PLC R04CPU โดยจะมีการแสดงผลทั้งแบบ กราฟเส้น กราฟวงกลม และตารางผลการทำงาน ในขณะที่เครื่องทำงานอยู่")
 
+        with tab3:
+            st.markdown("# :black[Delete All Data From Database] ")
+            Delete = st.button("Delete", key = "Database")
+            if not Delete:
+                st.warning('It will delete all data from database', icon="⚠️")
+            else:
+                firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
+                firebaseDB.delete('/','')
+                st.success('Delete Success!', icon="✅")
+      
     Start = st.sidebar.button("Click here to start")
     if Start:
         # print("Start")
