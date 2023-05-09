@@ -115,26 +115,26 @@ def MainProcess(df):
         # PtoP.columns = ['PToP1','PToP2','PToP3','PToP4',
         #                 'PToP5','PToP6','PToP7','PToP8','PToP9']
 
-        RMS = pd.DataFrame() 
-        for x in scaled_newdf:
+        # RMS = pd.DataFrame() 
+        # for x in scaled_newdf:
 
-            c = TestX[x]
-            da1 = c.iloc[[0]]
-            total = np.sqrt((da1**2).sum() / len(scaled_newdf[x]))
-            df2 = pd.DataFrame([total])
-            RMS = pd.concat([RMS, df2], axis=1)
+        #     c = TestX[x]
+        #     da1 = c.iloc[[0]]
+        #     total = np.sqrt((da1**2).sum() / len(scaled_newdf[x]))
+        #     df2 = pd.DataFrame([total])
+        #     RMS = pd.concat([RMS, df2], axis=1)
 
-        RMS.columns = ['RMS1','RMS2','RMS3','RMS4']
-        # RMS.columns = ['RMS1','RMS2','RMS3','RMS4',
-        #                'RMS5','RMS6','RMS7','RMS8','RMS9']
-        # print(RMS)
+        # RMS.columns = ['RMS1','RMS2','RMS3','RMS4']
+        # # RMS.columns = ['RMS1','RMS2','RMS3','RMS4',
+        # #                'RMS5','RMS6','RMS7','RMS8','RMS9']
+        # # print(RMS)
 
         result = pd.concat([Mean, Median], axis=1)
         result = pd.concat([result, Std], axis=1)
         result = pd.concat([result, Mode], axis=1)
         result = pd.concat([result, Kurt], axis=1)
         result = pd.concat([result, PtoP], axis=1)
-        result = pd.concat([result, RMS], axis=1)
+        # result = pd.concat([result, RMS], axis=1)
 
         
         newresult = result[['Std3','Std2','Mean2','Std1','PToP1','PToP4','PToP2','Std4','Kurtosis1','Kurtosis4']]
@@ -173,8 +173,8 @@ def MainProcess(df):
         # print(okng,timeX,prediction_proba[0],prediction[0],Std3,Std2,Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4) 
 
         # ToFirebase
-        ToFirebase(OKNG,timeX,prediction_proba,prediction,Std3,Std2,
-                   Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4,Name_for_database)
+        # ToFirebase(OKNG,timeX,prediction_proba,prediction,Std3,Std2,
+        #            Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4,Name_for_database)
           
         with placeholder.container():
             DataQ = Run(IfNotUseDatabase,Name_for_database)
@@ -225,13 +225,18 @@ def BeforeMainProcess():
 
         with tab3:
             st.markdown("# :black[Delete All Data From Database] ")
-            Delete = st.button("Delete", key = "Database")
-            if not Delete:
-                st.warning('It will delete all data from database', icon="⚠️")
-            else:
-                firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
-                firebaseDB.delete('/','')
-                st.success('Delete Success!', icon="✅")
+
+            col1, col2 = st.columns((2,3))
+            with col1:
+                Delete = st.button("Delete", key = "Database",use_container_width=False)
+                if not Delete:
+                    st.warning('It will delete all data from database', icon="⚠️")
+                else:
+                    # firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
+                    # firebaseDB.delete('/','')
+                    st.success('Delete Success!', icon="✅")
+
+
       
     Start = st.sidebar.button("Click here to start")
     if Start:

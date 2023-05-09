@@ -137,4 +137,246 @@ warnings.filterwarnings("ignore")
 #     """,
 #     unsafe_allow_html=True,
 # )
- 
+
+# data = pd.read_csv('Data/Dataset/All134.csv')
+data = pd.read_csv('Component/Data/Dataset/TotalFile35_36.csv')
+
+def MainProcess(df):
+    # print("Calculate")
+    TestX = df
+    # TestX = TestX.iloc[: , 1:] 
+    TestX = TestX.iloc[: , 1:5]
+    
+    # count Time
+    start = time.time()
+
+    # Set for 1 container
+
+    # Add new
+    # df = pd.DataFrame()
+
+
+    ###### Sliding Windows
+    First,Last = 0,390
+
+    while Last <= 610: 
+        start = time.time()
+        Position = TestX.iloc[First:Last]
+
+        # If not use scale data
+        scaled_newdf = Position
+        # print(scaled_newdf)
+
+        df = pd.DataFrame()
+
+        # Mean = pd.DataFrame()
+        # start = time.time()
+        # for x in scaled_newdf:
+        #     # print(x)
+        #     total = scaled_newdf[x].mean()
+        #     df2 = pd.DataFrame([total])
+        #     Mean = pd.concat([Mean, df2], axis=1)
+        
+        # end = time.time()
+        # Mean.columns = ['Mean1','Mean2','Mean3','Mean4']
+        # print(Mean)
+        # print("Time use : ",end - start)
+        # fef = ["level_2","level_3","level_4","level_5"]
+        # print(scaled_newdf["level_2"],scaled_newdf["level_3"],scaled_newdf["level_4"],scaled_newdf["level_5"])
+        
+        # Mean
+        total1 = scaled_newdf["level_2"].mean()
+        total2 = scaled_newdf["level_3"].mean()
+        total3 = scaled_newdf["level_4"].mean()
+        total4 = scaled_newdf["level_5"].mean()
+
+        Mean = {
+            'Mean1':[total1],
+            'Mean2':[total2],
+            'Mean3':[total3],
+            'Mean4':[total4],
+        }
+        Mean = pd.DataFrame(Mean)
+
+        # print(Mean)
+        # print("Time use : ",end - start)
+
+        # Median = pd.DataFrame()
+        # for x in scaled_newdf:
+        #     total = scaled_newdf[x].median()
+        #     df2 = pd.DataFrame([total])
+        #     Median = pd.concat([Median, df2], axis=1)
+
+        # Median.columns = ['Median1','Median2','Median3','Median4']
+
+        # Median
+        total1 = scaled_newdf["level_2"].median()
+        total2 = scaled_newdf["level_3"].median()
+        total3 = scaled_newdf["level_4"].median()
+        total4 = scaled_newdf["level_5"].median()
+
+        Median = {
+            'Median1':[total1],
+            'Median2':[total2],
+            'Median3':[total3],
+            'Median4':[total4],
+        }
+        Median = pd.DataFrame(Median)
+
+
+
+        # Std = pd.DataFrame()
+        # for x in scaled_newdf:
+        # # for x in TestX:
+        #     total = scaled_newdf[x].std()
+        #     df2 = pd.DataFrame([total])
+        #     Std = pd.concat([Std, df2], axis=1)
+
+        # Std.columns = ['Std1','Std2','Std3','Std4']
+
+        # Std
+        total1 = scaled_newdf["level_2"].std()
+        total2 = scaled_newdf["level_3"].std()
+        total3 = scaled_newdf["level_4"].std()
+        total4 = scaled_newdf["level_5"].std()
+
+        Std = {
+            'Std1':[total1],
+            'Std2':[total2],
+            'Std3':[total3],
+            'Std4':[total4],
+        }
+        Std = pd.DataFrame(Std)
+
+
+
+        # Mode = pd.DataFrame()
+        # for x in scaled_newdf:
+        #     total = statistics.mode(scaled_newdf[x])
+        #     df2 = pd.DataFrame([total])
+        #     Mode = pd.concat([Mode, df2], axis=1)
+
+        # Mode.columns = ['Mode1','Mode2','Mode3','Mode4']
+
+        # Mode
+        total1 = statistics.mode(scaled_newdf["level_2"])
+        total1 = statistics.mode(scaled_newdf["level_3"])
+        total1 = statistics.mode(scaled_newdf["level_4"])
+        total1 = statistics.mode(scaled_newdf["level_5"])
+
+        Mode = {
+            'Mode1':[total1],
+            'Mode2':[total2],
+            'Mode3':[total3],
+            'Mode4':[total4],
+        }
+        Mode = pd.DataFrame(Mode)
+
+        # Kurt = pd.DataFrame()
+        # for x in scaled_newdf:
+
+        #     total = kurtosis(scaled_newdf[x],bias=False)
+        #     df2 = pd.DataFrame([total])
+        #     Kurt = pd.concat([Kurt, df2], axis=1)
+
+        # Kurt.columns = ['Kurtosis1','Kurtosis2','Kurtosis3',
+        #                 'Kurtosis4']
+
+        # Kurtosis
+        total1 = kurtosis(scaled_newdf["level_2"],bias=False)
+        total1 = kurtosis(scaled_newdf["level_3"],bias=False)
+        total1 = kurtosis(scaled_newdf["level_4"],bias=False)
+        total1 = kurtosis(scaled_newdf["level_5"],bias=False)
+
+        Kurt = {
+            'Kurtosis1':[total1],
+            'Kurtosis2':[total2],
+            'Kurtosis3':[total3],
+            'Kurtosis4':[total4],
+        }
+        Kurt = pd.DataFrame(Kurt)
+
+
+        # PtoP = pd.DataFrame()
+        # for x in scaled_newdf:
+
+        #     total = scaled_newdf[x].max() + scaled_newdf[x].min()
+        #     df2 = pd.DataFrame([total])
+        #     PtoP = pd.concat([PtoP, df2], axis=1)
+
+        # PtoP.columns = ['PToP1','PToP2','PToP3','PToP4']
+
+        # PtoP
+        total1 = scaled_newdf["level_2"].max() + scaled_newdf["level_2"].min()
+        total1 = scaled_newdf["level_3"].max() + scaled_newdf["level_3"].min()
+        total1 = scaled_newdf["level_4"].max() + scaled_newdf["level_4"].min()
+        total1 = scaled_newdf["level_5"].max() + scaled_newdf["level_5"].min()
+
+        PtoP = {
+            'PToP1':[total1],
+            'PToP2':[total2],
+            'PToP3':[total3],
+            'PToP4':[total4],
+        }
+        PtoP = pd.DataFrame(PtoP)
+
+
+        # RMS = pd.DataFrame() 
+        # for x in scaled_newdf:
+
+        #     # c = TestX[x]
+        #     # da1 = c.iloc[[0]]
+        #     # print(da1)
+        #     total = np.sqrt((scaled_newdf[x]**2).sum() / len(scaled_newdf[x]))
+        #     print("yes :",scaled_newdf[x]**2)
+        #     print("not : ",scaled_newdf[x])
+        #     df2 = pd.DataFrame([total])
+        #     RMS = pd.concat([RMS, df2], axis=1)
+
+        # RMS.columns = ['RMS1','RMS2','RMS3','RMS4']
+
+        total1 = np.sqrt((scaled_newdf["level_2"]**2).sum() / len(scaled_newdf["level_2"]))
+        total1 = np.sqrt((scaled_newdf["level_3"]**2).sum() / len(scaled_newdf["level_3"]))
+        total1 = np.sqrt((scaled_newdf["level_4"]**2).sum() / len(scaled_newdf["level_4"]))
+        total1 = np.sqrt((scaled_newdf["level_5"]**2).sum() / len(scaled_newdf["level_5"]))
+
+        RMS = {
+            'RMS1':[total1],
+            'RMS2':[total2],
+            'RMS3':[total3],
+            'RMS4':[total4],
+        }
+        RMS = pd.DataFrame(RMS)
+
+        result = pd.concat([Mean, Median], axis=1)
+        result = pd.concat([result, Std], axis=1)
+        result = pd.concat([result, Mode], axis=1)
+        result = pd.concat([result, Kurt], axis=1)
+        result = pd.concat([result, PtoP], axis=1)
+        result = pd.concat([result, RMS], axis=1)
+
+        
+        newresult = result[['Std3','Std2','Mean2','Std1','PToP1','PToP4','PToP2','Std4','Kurtosis1','Kurtosis4']]
+        dot_time = datetime.today().strftime('%H:%M:%S')
+        df = newresult
+
+        load_clf = pickle.load(open('Component/Data/Model/IsolationForest_7.pkl', 'rb')) 
+
+        # IsolationForest
+        prediction = load_clf.predict(df) 
+        prediction_proba = load_clf.decision_function(df)
+
+        
+        if prediction[0] == -1 and prediction_proba[0] < 0:
+            OKNG = 'NG'
+            # OKNG = 'OK'
+        else:
+            OKNG = 'OK'
+        end = time.time()
+        # print("Time use : ",end - start)
+
+        First = First + 5 # or + 5
+        Last = Last + 5 # or + 5
+        print(OKNG,dot_time,prediction_proba,prediction)
+
+MainProcess(data)
