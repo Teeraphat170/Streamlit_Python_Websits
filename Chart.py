@@ -82,9 +82,11 @@ def Run(IfNotUseDatabase,Name_for_database):
 
         col2, col3 = st.columns((30,30))
         with col2:
+            st.header("Line Chart")
             fig = px.line(DataQ, x = 'Time',y = DataQ.columns[2:-6])
             st.plotly_chart(fig, use_container_width=True)
         with col3:
+            st.header("Line Chart")
             fig = px.line(DataQ, x = 'Time',y = DataQ.columns[7:-1])
             st.plotly_chart(fig, use_container_width=True)
 
