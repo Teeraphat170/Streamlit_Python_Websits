@@ -21,14 +21,14 @@ warnings.filterwarnings("ignore")
 # data = pd.read_csv('Component/Data/Dataset/TotalFile35_36.csv')
 
 # Main
-def MainProcess(df):
+def MainProcess(df,Row):
     # print("Calculate")
     TestX = df
     # TestX = TestX.iloc[: , 1:] 
     TestX = TestX.iloc[: , 1:5]
     
     # count Time
-    start = time.time()
+    start_all= time.time()
 
     # Set for 1 container
     placeholder = st.empty() 
@@ -56,9 +56,6 @@ def MainProcess(df):
             Mean = pd.concat([Mean, df2], axis=1)
 
         Mean.columns = ['Mean1','Mean2','Mean3','Mean4']
-        # Mean.columns = ['Mean1','Mean2','Mean3','Mean4','Mean5',
-        #                 'Mean6','Mean7','Mean8','Mean9']
-
 
         Median = pd.DataFrame()
         for x in scaled_newdf:
@@ -67,19 +64,14 @@ def MainProcess(df):
             Median = pd.concat([Median, df2], axis=1)
 
         Median.columns = ['Median1','Median2','Median3','Median4']
-        # Median.columns = ['Median1','Median2','Median3','Median4','Median5',
-        #                   'Median6','Median7','Median8','Median9']
 
         Std = pd.DataFrame()
         for x in scaled_newdf:
-        # for x in TestX:
             total = scaled_newdf[x].std()
             df2 = pd.DataFrame([total])
             Std = pd.concat([Std, df2], axis=1)
 
         Std.columns = ['Std1','Std2','Std3','Std4']
-        # Std.columns = ['Std1','Std2','Std3','Std4',
-        #                'Std5','Std6','Std7','Std8','Std9']
 
         Mode = pd.DataFrame()
         for x in scaled_newdf:
@@ -88,8 +80,6 @@ def MainProcess(df):
             Mode = pd.concat([Mode, df2], axis=1)
 
         Mode.columns = ['Mode1','Mode2','Mode3','Mode4']
-        # Mode.columns = ['Mode1','Mode2','Mode3','Mode4','Mode5',
-        #                 'Mode6','Mode7','Mode8','Mode9']
 
         Kurt = pd.DataFrame()
         for x in scaled_newdf:
@@ -100,9 +90,6 @@ def MainProcess(df):
 
         Kurt.columns = ['Kurtosis1','Kurtosis2','Kurtosis3',
                         'Kurtosis4']
-        # Kurt.columns = ['Kurtosis1','Kurtosis2','Kurtosis3',
-        #                 'Kurtosis4','Kurtosis5','Kurtosis6',
-        #                 'Kurtosis7','Kurtosis8','Kurtosis9']
 
         PtoP = pd.DataFrame()
         for x in scaled_newdf:
@@ -112,8 +99,6 @@ def MainProcess(df):
             PtoP = pd.concat([PtoP, df2], axis=1)
 
         PtoP.columns = ['PToP1','PToP2','PToP3','PToP4']
-        # PtoP.columns = ['PToP1','PToP2','PToP3','PToP4',
-        #                 'PToP5','PToP6','PToP7','PToP8','PToP9']
 
         # RMS = pd.DataFrame() 
         # for x in scaled_newdf:
@@ -153,7 +138,11 @@ def MainProcess(df):
 
 
         # To predict
+        start_predict = time.time()
         OKNG,timeX,prediction_proba,prediction = predict(newresult) #Supervised And IsolationForest
+        end_predict = time.time()
+        # print("Time use predict: ",end_predict - start_predict)
+
         # print(OKNG,timeX,prediction_proba,prediction)
 
         # If_Not_use_database
@@ -173,20 +162,25 @@ def MainProcess(df):
         # print(okng,timeX,prediction_proba[0],prediction[0],Std3,Std2,Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4) 
 
         # ToFirebase
-        # ToFirebase(OKNG,timeX,prediction_proba,prediction,Std3,Std2,
-        #            Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4,Name_for_database)
-          
+        # ToFirebase(OKNG,timeX,prediction_proba,prediction,Std3,Std2,Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4,Name_for_database)
+        start = time.time()
         with placeholder.container():
             DataQ = Run(IfNotUseDatabase,Name_for_database)
             # Run()
+        end = time.time()
+        print("Time use in Chart: ",end - start)
 
-        First = First + 10 # or + 5
-        Last = Last + 10 # or + 5
-        # end = time.time()
-        # print("Time use : ",end - start)
+
+        First = First + Row # or + 10
+        Last = Last + Row # or + 10
+
+        end_all = time.time()
+        # print("Time use all: ",end_all - start_all)
     # print(DataQ)
     # placeholder.empty()
     return OKNG,timeX,prediction_proba,prediction
+
+
 
 
 def BeforeMainProcess():
@@ -225,24 +219,25 @@ def BeforeMainProcess():
 
         with tab3:
             st.markdown("# :black[Delete All Data From Database] ")
-
+            Row_change = 5
             col1, col2 = st.columns((2,3))
             with col1:
-                Delete = st.button("Delete", key = "Database",use_container_width=False)
-                if not Delete:
-                    st.warning('It will delete all data from database', icon="⚠️")
+                # Delete = st.button("Delete", key = "Database",use_container_width=False)
+                Row = st.slider('Change Row After Sliding Windows', 1, 10, 5,label_visibility="visible")
+                # Row = st.selectbox('How would you like to be contacted?',(5, 6, 7, 8, 9, 10))
+            with col2:
+                st.write("")
+                if Row != Row_change:
+                    st.success('Change Success!', icon="✅")
                 else:
-                    # firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
-                    # firebaseDB.delete('/','')
-                    st.success('Delete Success!', icon="✅")
-
+                    st.warning('Default Value of Row After Sliding Windows', icon="⚠️")
 
       
     Start = st.sidebar.button("Click here to start")
     if Start:
         # print("Start")
         placeholder.empty()
-        MainProcess(data)
+        MainProcess(data,Row)
 
     
 # For Test

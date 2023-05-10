@@ -1,4 +1,5 @@
 from firebase import firebase
+import time
 import plotly.express as px
 import pandas as pd
 import streamlit as st
@@ -45,23 +46,22 @@ def Run(IfNotUseDatabase,Name_for_database):
     DataQ = IfNotUseDatabase[["Prediction","Probability","Std3","Std2","Mean2","Std1","PToP1","PToP4","PToP2","Std4","Kurtosis1","Kurtosis4","Time"]]
 
     # CSS
+    
     with open('Style.css') as f: # Test.css with command prompt : TestFolder/Test.css with PowerShell
         st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
     # Make Realtime Streamlit
+    
     tab1, tab2, tab3 = st.tabs(["📈 Dashboard", "📑 Data", "⚙️ Setting"])
     with tab2:
-        
-        col1, col2, col3 = st.columns((60,5,20))
-        with col1:
-            st.header("Dataframe")
-            st.dataframe(DataQ)
+        col1, col2, col3 = st.columns((4,10,1))
         with col2:
-            st.write("")
-        with col3:
+            st.header("Statistical Value")
+            st.dataframe(DataQ[["Std3","Std2","Mean2","Std1","PToP1","PToP4","PToP2","Std4","Kurtosis1","Kurtosis4"]])
+        with col1:
             st.header("Result")
-            st.dataframe(IfNotUseDatabase["Result"])
-
+            st.dataframe(DataQ[["Prediction","Probability","Time"]])
+    
     with tab1:
         st.markdown("# :black[Anomaly Detection Dashborad] ")
         # st.markdown("Anomaly Detection Dashborad")
@@ -79,20 +79,34 @@ def Run(IfNotUseDatabase,Name_for_database):
             fig = px.pie(values=piechart,names=detection)
             st.header("Pie Chart")
             st.plotly_chart(fig, use_container_width=True)
-
+        
         col2, col3 = st.columns((30,30))
         with col2:
             st.header("Line Chart")
-            fig = px.line(DataQ, x = 'Time',y = DataQ.columns[2:-6])
-            st.plotly_chart(fig, use_container_width=True)
-        with col3:
-            st.header("Line Chart")
-            fig = px.line(DataQ, x = 'Time',y = DataQ.columns[7:-1])
-            st.plotly_chart(fig, use_container_width=True)
+            Data1 = DataQ[["Std3","Std2","Mean2","Std1","PToP1","Time"]]
+            st.line_chart(Data1, x = 'Time')
 
+            # fig = px.line(DataQ, x = 'Time',y = DataQ.columns[2:-6])
+            # st.plotly_chart(fig, use_container_width=True)
+
+        with col3: 
+            # start = time.time()
+            st.header("Line Chart")
+            # fig = px.line(DataQ, x = 'Time',y = DataQ.columns[7:-1])
+            # st.plotly_chart(fig, use_container_width=True)
+
+            Data2 = DataQ[["PToP4","PToP2","Std4","Kurtosis1","Kurtosis4","Time"]]
+            st.line_chart(Data2, x = 'Time')
+
+            # end = time.time()
+            # print("Time use Chart: ",end - start)
 
     return DataQ
-
+        
+        
+# start = time.time()
+# end = time.time()
+# print("Time use in Chart: ",end - start)
         
         
  
