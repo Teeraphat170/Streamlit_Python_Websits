@@ -1,5 +1,7 @@
 from firebase import firebase
 import time
+import random
+import string
 import plotly.express as px
 import pandas as pd
 import streamlit as st
@@ -51,8 +53,8 @@ def Run(IfNotUseDatabase,Name_for_database):
         st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
     # Make Realtime Streamlit
-    
-    tab1, tab2, tab3 = st.tabs(["📈 Dashboard", "📑 Data", "⚙️ Setting"])
+    # tab1, tab2, tab3 = st.tabs(["📈 Dashboard", "📑 Data", "⚙️ Setting"])
+    tab1, tab2 = st.tabs(["📈 Dashboard", "📑 Data"])
     with tab2:
         col1, col2, col3 = st.columns((4,10,1))
         with col2:
@@ -101,6 +103,9 @@ def Run(IfNotUseDatabase,Name_for_database):
             # end = time.time()
             # print("Time use Chart: ",end - start)
 
+  
+            
+    # Stop = st.button('Stop Running', use_container_width=False,key=DataQ['Prediction'][0])
     return DataQ
         
         

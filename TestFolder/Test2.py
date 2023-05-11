@@ -380,4 +380,36 @@ warnings.filterwarnings("ignore")
 #         print(OKNG,dot_time,prediction_proba,prediction)
 
 # MainProcess(data)
+st.title('Counter Example using Callbacks')
+if 'count' not in st.session_state:
+    st.session_state.count = 0
 
+def increment_counter():
+    st.session_state.count += 1
+
+st.button('Increment', on_click=increment_counter)
+
+st.write('Count = ', st.session_state.count)
+
+df = pd.DataFrame()
+
+if df not in st.session_state:
+    st.session_state.df = df
+
+data = {
+  "calories": [420, 380, 390, 380, 400, 390],
+  "duration": [50, 40, 45, 50, 50, 45],
+  "test":[12, 16, 15, 16, 15, 19],
+    "calories1": [420, 380, 390, 380, 400, 390],
+  "duration1": [50, 40, 45, 50, 50, 45],
+  "test1":[12, 16, 15, 16, 15, 19],
+    "calories3": [420, 380, 390, 380, 400, 390],
+  "duration3": [50, 40, 45, 50, 50, 45],
+  "test3":[12, 16, 15, 16, 15, 19],
+    "calories4": [420, 380, 390, 380, 400, 390],
+  "duration4": [50, 40, 45, 50, 50, 45],
+  "test4":[12, 16, 15, 16, 15, 19],
+}
+
+df = pd.DataFrame(data)
+st.dataframe(df)

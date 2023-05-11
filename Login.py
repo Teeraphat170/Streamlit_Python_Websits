@@ -27,14 +27,14 @@ def Login():
 
     name, authentication_status, username = authenticator.login("Login", "main")
 
-    if st.session_state["authentication_status"] == False:
+    if authentication_status == False:
         st.error("Username/password is incorrect")
 
-    if st.session_state["authentication_status"] == None:
+    if authentication_status == None:
         st.warning("Please enter your username and password")
 
-    if st.session_state["authentication_status"]:
-
+    if authentication_status:
+        # st.session_state.key = name,username
         st.sidebar.title(f'Welcome *{st.session_state["name"]}*')
         authenticator.logout("Logout", "sidebar")
         BeforeMainProcess()
