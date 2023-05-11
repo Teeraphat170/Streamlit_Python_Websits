@@ -156,8 +156,6 @@ def MainProcess(df,Row,dataframe):
         result_for_predict = pd.concat([result_for_predict, newresult], axis=1)
         IfNotUseDatabase = pd.concat([IfNotUseDatabase,result_for_predict], axis=0)
         IfNotUseDatabase = IfNotUseDatabase.reset_index(drop=True)
-        dataframe = pd.concat([dataframe,IfNotUseDatabase], axis=0)
-        print(dataframe)
         # print(IfNotUseDatabase)
 
         #if wanna see Result
@@ -165,6 +163,12 @@ def MainProcess(df,Row,dataframe):
 
         # ToFirebase
         # ToFirebase(OKNG,timeX,prediction_proba,prediction,Std3,Std2,Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4,Name_for_database)
+        try:
+            dataframeX = dataframe[["Result","Time","Probability","Prediction",'Std3','Std2','Mean2','Std1','PToP1','PToP4','PToP2','Std4','Kurtosis1','Kurtosis4']]
+            IfNotUseDatabase = pd.concat([IfNotUseDatabase,dataframeX], axis=0)
+        except:
+            pass
+
         start = time.time()
         with placeholder.container():
             DataQ = Run(IfNotUseDatabase,Name_for_database)
@@ -183,17 +187,29 @@ def MainProcess(df,Row,dataframe):
         # print("Time use all: ",end_all - start_all)
     # print(DataQ)
     # placeholder.empty()
+    dataframe = pd.concat([dataframe,IfNotUseDatabase], axis=0)
+    # print(dataframe)
     return dataframe
 
 
 
 
 def BeforeMainProcess():
-    # Clear Database for New Run 
+    # df = pd.DataFrame()
+    # datax = {
+    #         "Result": [1.0]
+    #         }
+    # df = pd.DataFrame(datax)
     df = pd.DataFrame()
-
-    if df not in st.session_state:
+    if df in st.session_state:
         st.session_state.df = df
+    # else:
+    #     st.session_state.df = df
+    # st.sidebar.write(st.session_state.df)
+    # st.session_state.df += 1
+    # st.sidebar.write(st.session_state.df)
+    st.sidebar.write(''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase, k=10)))
+
 
     with st.sidebar:
         add_selectbox = st.selectbox(
@@ -235,7 +251,7 @@ def BeforeMainProcess():
             col1, col2 = st.columns((2,3))
             with col1:
                 # Delete = st.button("Delete", key = "Database",use_container_width=False)
-                Row = st.slider('Change Row After Sliding Windows', 1, 10, 5,label_visibility="visible")
+                Row = st.slider('Change Row After Sliding Windows', 1, 10, 10,label_visibility="visible")
                 # Row = st.selectbox('How would you like to be contacted?',(5, 6, 7, 8, 9, 10))
             with col2:
                 st.write("")
@@ -250,10 +266,29 @@ def BeforeMainProcess():
         # print("Start")
         placeholder.empty()
         st.session_state.key = MainProcess(data,Row,df)
-    st.session_state.df = st.session_state.key
-    print(st.session_state.df)
-    st.write(st.session_state.df)
-        # MainProcess(data,Row)
+    # st.write(st.session_state.key)
+    try:
+        st.session_state.df = pd.concat([st.session_state.df,st.session_state.key], axis=0)
+        # st.session_state.df = st.session_state.key
+        st.session_state.df = st.session_state.df.reset_index(drop=True)
+        st.write(st.session_state.df)
+        df = st.session_state.df
+        # st.write(df)
+    except:
+        pass
+    # st.write(st.session_state.df)
+
+    
+    # st.sidebar.title('Counter Example')
+    # if 'count' not in st.session_state:
+    #     st.session_state.count = 0
+
+    # increment = st.sidebar.button('Increment')
+    # if increment:
+    #     st.session_state.count += 1
+
+    #     st.sidebar.write('Count = ', st.session_state.count)
+
 
     
 # For Test

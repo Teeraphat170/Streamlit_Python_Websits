@@ -37,6 +37,9 @@ def Login():
         # st.session_state.key = name,username
         st.sidebar.title(f'Welcome *{st.session_state["name"]}*')
         authenticator.logout("Logout", "sidebar")
+        # df = pd.DataFrame()
+        # if df not in st.session_state:
+        #     st.session_state.df = df
         BeforeMainProcess()
  
 
