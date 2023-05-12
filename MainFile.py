@@ -20,8 +20,93 @@ warnings.filterwarnings("ignore")
 # data = pd.read_csv('Data/Dataset/All134.csv')
 # data = pd.read_csv('Component/Data/Dataset/TotalFile35_36.csv')
 
+def FromDatabase():
+    df = pd.DataFrame()
+    firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
+    result = firebaseDB.get('/FinalProject', '')
+
+    Prediction = pd.DataFrame()
+    Probability = pd.DataFrame()
+    Result = pd.DataFrame()
+    Time = pd.DataFrame()
+    Std3 = pd.DataFrame()
+    Std2 = pd.DataFrame()
+    Mean2 = pd.DataFrame()
+    Std1 = pd.DataFrame()
+    PToP1 = pd.DataFrame()
+    PToP4 = pd.DataFrame()
+    PToP2 = pd.DataFrame()
+    Std4 = pd.DataFrame()
+    Kurtosis1 = pd.DataFrame()
+    Kurtosis4 = pd.DataFrame()
+    Total = pd.DataFrame()
+
+    for key, value in result.items():
+
+        Prediction_in_loop = pd.DataFrame(value["Prediction"],columns=["Prediction"])
+        Probability_in_loop = pd.DataFrame(value["Probability"],columns=["Probability"])
+        Result_in_loop = pd.DataFrame(value["Result"],columns=["Result"])
+        Time_in_loop = pd.DataFrame(value["Time"],columns=["Time"])
+        Std3_in_loop = pd.DataFrame(value["Std3"],columns=["Std3"])
+        Std2_in_loop = pd.DataFrame(value["Std2"],columns=["Std2"])
+        Mean2_in_loop = pd.DataFrame(value["Mean2"],columns=["Mean2"])
+        Std1_in_loop = pd.DataFrame(value["Std1"],columns=["Std1"])
+        PToP1_in_loop = pd.DataFrame(value["PToP1"],columns=["PToP1"])
+        PToP4_in_loop = pd.DataFrame(value["PToP4"],columns=["PToP4"])
+        PToP2_in_loop = pd.DataFrame(value["PToP2"],columns=["PToP2"])
+        Std4_in_loop = pd.DataFrame(value["Std4"],columns=["Std4"])
+        Kurtosis1_in_loop = pd.DataFrame(value["Kurtosis1"],columns=["Kurtosis1"])
+        Kurtosis4_in_loop = pd.DataFrame(value["Kurtosis4"],columns=["Kurtosis4"])
+
+        Prediction = pd.concat([Prediction, Prediction_in_loop], axis=0)
+        Prediction = Prediction.reset_index(drop=True)
+        Probability = pd.concat([Probability, Probability_in_loop], axis=0)
+        Probability = Probability.reset_index(drop=True)
+        Result = pd.concat([Result, Result_in_loop], axis=0)
+        Result = Result.reset_index(drop=True)
+        Time = pd.concat([Time, Time_in_loop], axis=0)
+        Time = Time.reset_index(drop=True)
+        Std3 = pd.concat([Std3, Std3_in_loop], axis=0)
+        Std3 = Std3.reset_index(drop=True)
+        Std2 = pd.concat([Std2, Std2_in_loop], axis=0)
+        Std2 = Std2.reset_index(drop=True)
+        Mean2 = pd.concat([Mean2, Mean2_in_loop], axis=0)
+        Mean2 = Mean2.reset_index(drop=True)
+        Std1 = pd.concat([Std1, Std1_in_loop], axis=0)
+        Std1 = Std1.reset_index(drop=True)
+        PToP1 = pd.concat([PToP1, PToP1_in_loop], axis=0)
+        PToP1 = PToP1.reset_index(drop=True)
+        PToP4 = pd.concat([PToP4, PToP4_in_loop], axis=0)
+        PToP4 = PToP4.reset_index(drop=True)
+        PToP2 = pd.concat([PToP2, PToP2_in_loop], axis=0)
+        PToP2 = PToP2.reset_index(drop=True)
+        Std4 = pd.concat([Std4, Std4_in_loop], axis=0)
+        Std4 = Std4.reset_index(drop=True)
+        Kurtosis1 = pd.concat([Kurtosis1, Kurtosis1_in_loop], axis=0)
+        Kurtosis1 = Kurtosis1.reset_index(drop=True)
+        Kurtosis4 = pd.concat([Kurtosis4, Kurtosis4_in_loop], axis=0)
+        Kurtosis4 = Kurtosis4.reset_index(drop=True)
+
+    Total = pd.concat([Total, Prediction], axis=1)
+    Total = pd.concat([Total, Probability], axis=1)
+    Total = pd.concat([Total, Result], axis=1)
+    Total = pd.concat([Total, Time], axis=1)
+    Total = pd.concat([Total, Std3], axis=1)
+    Total = pd.concat([Total, Std2], axis=1)
+    Total = pd.concat([Total, Mean2], axis=1)
+    Total = pd.concat([Total, Std1], axis=1)
+    Total = pd.concat([Total, PToP1], axis=1)
+    Total = pd.concat([Total, PToP4], axis=1)
+    Total = pd.concat([Total, PToP2], axis=1)
+    Total = pd.concat([Total, Std4], axis=1)
+    Total = pd.concat([Total, Kurtosis1], axis=1)
+    Total = pd.concat([Total, Kurtosis4], axis=1)
+    # print(Total)
+    return Total
+
+
 # Main
-def MainProcess(df,Row,dataframe):
+def MainProcess(df,Row,dataframe,Remain_Or_Not):
     # print("Calculate")
     TestX = df
     # TestX = TestX.iloc[: , 1:] 
@@ -38,6 +123,13 @@ def MainProcess(df,Row,dataframe):
 
     ###### Sliding Windows
     First,Last = 0,390
+
+    # Fromdatabase
+    try:
+        Data_From_Database = FromDatabase()
+        print(Data_From_Database)
+    except:
+        pass
 
     while Last <= len(TestX): 
         
@@ -185,12 +277,13 @@ def MainProcess(df,Row,dataframe):
 
         end_all = time.time()
         # print("Time use all: ",end_all - start_all)
-    # print(DataQ)
-    # placeholder.empty()
-    st.dataframe(IfNotUseDatabase)
-    dataframe = pd.concat([dataframe,IfNotUseDatabase], axis=0)
-    # st.dataframe(dataframe)
-    ToFirebase(dataframe)
+
+
+    # st.dataframe(IfNotUseDatabase)
+    if Remain_Or_Not == 1:
+        dataframe = pd.concat([dataframe,IfNotUseDatabase], axis=0)
+        ToFirebase(dataframe)
+
     # print(dataframe)
     return dataframe
 
@@ -234,7 +327,7 @@ def BeforeMainProcess(dataframe):
                 ในขณะที่เครื่องทำงานอยู่""")
 
         with tab3:
-            st.markdown("# :black[Change Row After Sliding Windows] ")
+            st.header(":black[Change Row After Sliding Windows] ")
             Row_change = 5
             col1, col2 = st.columns((2,3))
             with col1:
@@ -248,12 +341,41 @@ def BeforeMainProcess(dataframe):
                 else:
                     st.warning('Default Value of Row After Sliding Windows', icon="⚠️")
 
+            st.header(":black[Data After Start Finish] ")
+            col3, col4 = st.columns((2,3))
+            with col3:
+                Remain_Data = st.radio("Want To Remain Data After Start?",('Yes', 'No'),index=1)
+            with col4:
+                st.write("")
+                if Remain_Data == 'No':
+                    Remain_Or_Not = 0
+                    st.write("")
+                    st.warning('If select Yes Data after run will be Remain', icon="⚠️")  
+                else:
+                    Remain_Or_Not = 1
+                    st.write("")
+                    st.success('Change Success!', icon="✅")
+
+            st.header(":black[Delete data from database] ")
+            col5, col6 = st.columns((2,3))
+            with col5:
+                st.write("")
+                Delete = st.button("Delete", key = "Database",use_container_width=True)
+
+            with col6:
+                
+                if Delete:
+                    firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
+                    firebaseDB.delete('/', '')
+                    st.success('Change Delete!', icon="✅")
+                else:
+                    st.warning('It will all delete data from database', icon="⚠️")
       
     Start = st.sidebar.button("Click here to start")
     if Start:
         # print("Start")
         placeholder.empty()
-        MainProcess(data,Row,dataframe)
+        MainProcess(data,Row,dataframe,Remain_Or_Not)
 
 
     

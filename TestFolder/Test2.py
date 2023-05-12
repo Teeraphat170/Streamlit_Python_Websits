@@ -432,24 +432,75 @@ PToP2 = pd.DataFrame()
 Std4 = pd.DataFrame()
 Kurtosis1 = pd.DataFrame()
 Kurtosis4 = pd.DataFrame()
+Total = pd.DataFrame()
 
 for key, value in result.items():
-    # print(value['Kurtosis1'])
-    Prediction = value["Prediction"]
-    Probability = value["Probability"]
-    Result = value["Result"]
-    Time = value["Time"]
-    Std3 = value["Std3"]
-    Std2 = value["Std2"]
-    Mean2 = value["Mean2"]
-    Std1 = value["Std1"]
-    PToP1 = value["PToP1"]
-    PToP4 = value["PToP4"]
-    PToP2 = value["PToP2"]
-    Std4 = value["Std4"]
-    Kurtosis1 = value["Kurtosis1"]
-    Kurtosis4 = value["Kurtosis4"]
-    st.write(value)
+
+    Prediction_in_loop = pd.DataFrame(value["Prediction"],columns=["Prediction"])
+    Probability_in_loop = pd.DataFrame(value["Probability"],columns=["Probability"])
+    Result_in_loop = pd.DataFrame(value["Result"],columns=["Result"])
+    Time_in_loop = pd.DataFrame(value["Time"],columns=["Time"])
+    Std3_in_loop = pd.DataFrame(value["Std3"],columns=["Std3"])
+    Std2_in_loop = pd.DataFrame(value["Std2"],columns=["Std2"])
+    Mean2_in_loop = pd.DataFrame(value["Mean2"],columns=["Mean2"])
+    Std1_in_loop = pd.DataFrame(value["Std1"],columns=["Std1"])
+    PToP1_in_loop = pd.DataFrame(value["PToP1"],columns=["PToP1"])
+    PToP4_in_loop = pd.DataFrame(value["PToP4"],columns=["PToP4"])
+    PToP2_in_loop = pd.DataFrame(value["PToP2"],columns=["PToP2"])
+    Std4_in_loop = pd.DataFrame(value["Std4"],columns=["Std4"])
+    Kurtosis1_in_loop = pd.DataFrame(value["Kurtosis1"],columns=["Kurtosis1"])
+    Kurtosis4_in_loop = pd.DataFrame(value["Kurtosis4"],columns=["Kurtosis4"])
+
+    Prediction = pd.concat([Prediction, Prediction_in_loop], axis=0)
+    Prediction = Prediction.reset_index(drop=True)
+    Probability = pd.concat([Probability, Probability_in_loop], axis=0)
+    Probability = Probability.reset_index(drop=True)
+    Result = pd.concat([Result, Result_in_loop], axis=0)
+    Result = Result.reset_index(drop=True)
+    Time = pd.concat([Time, Time_in_loop], axis=0)
+    Time = Time.reset_index(drop=True)
+    Std3 = pd.concat([Std3, Std3_in_loop], axis=0)
+    Std3 = Std3.reset_index(drop=True)
+    Std2 = pd.concat([Std2, Std2_in_loop], axis=0)
+    Std2 = Std2.reset_index(drop=True)
+    Mean2 = pd.concat([Mean2, Mean2_in_loop], axis=0)
+    Mean2 = Mean2.reset_index(drop=True)
+    Std1 = pd.concat([Std1, Std1_in_loop], axis=0)
+    Std1 = Std1.reset_index(drop=True)
+    PToP1 = pd.concat([PToP1, PToP1_in_loop], axis=0)
+    PToP1 = PToP1.reset_index(drop=True)
+    PToP4 = pd.concat([PToP4, PToP4_in_loop], axis=0)
+    PToP4 = PToP4.reset_index(drop=True)
+    PToP2 = pd.concat([PToP2, PToP2_in_loop], axis=0)
+    PToP2 = PToP2.reset_index(drop=True)
+    Std4 = pd.concat([Std4, Std4_in_loop], axis=0)
+    Std4 = Std4.reset_index(drop=True)
+    Kurtosis1 = pd.concat([Kurtosis1, Kurtosis1_in_loop], axis=0)
+    Kurtosis1 = Kurtosis1.reset_index(drop=True)
+    Kurtosis4 = pd.concat([Kurtosis4, Kurtosis4_in_loop], axis=0)
+    Kurtosis4 = Kurtosis4.reset_index(drop=True)
+
+Total = pd.concat([Total, Prediction], axis=1)
+Total = pd.concat([Total, Probability], axis=1)
+Total = pd.concat([Total, Result], axis=1)
+Total = pd.concat([Total, Time], axis=1)
+Total = pd.concat([Total, Std3], axis=1)
+Total = pd.concat([Total, Std2], axis=1)
+Total = pd.concat([Total, Mean2], axis=1)
+Total = pd.concat([Total, Std1], axis=1)
+Total = pd.concat([Total, PToP1], axis=1)
+Total = pd.concat([Total, PToP4], axis=1)
+Total = pd.concat([Total, PToP2], axis=1)
+Total = pd.concat([Total, Std4], axis=1)
+Total = pd.concat([Total, Kurtosis1], axis=1)
+Total = pd.concat([Total, Kurtosis4], axis=1)
+
+
+st.write(Total)
+
+
+
+
     # Prediction = pd.concat([Prediction, value["Prediction"]], axis=0)
 # st.write(Prediction)
     # st.dataframe(Time)
