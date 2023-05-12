@@ -380,36 +380,88 @@ warnings.filterwarnings("ignore")
 #         print(OKNG,dot_time,prediction_proba,prediction)
 
 # MainProcess(data)
-st.title('Counter Example using Callbacks')
-if 'count' not in st.session_state:
-    st.session_state.count = 0
+# st.title('Counter Example using Callbacks')
+# if 'count' not in st.session_state:
+#     st.session_state.count = 0
 
-def increment_counter():
-    st.session_state.count += 1
+# def increment_counter():
+#     st.session_state.count += 1
 
-st.button('Increment', on_click=increment_counter)
+# st.button('Increment', on_click=increment_counter)
 
-st.write('Count = ', st.session_state.count)
+# st.write('Count = ', st.session_state.count)
 
+# df = pd.DataFrame()
+
+# if df not in st.session_state:
+#     st.session_state.df = df
+
+# data = {
+#   "calories": [420, 380, 390, 380, 400, 390],
+#   "duration": [50, 40, 45, 50, 50, 45],
+#   "test":[12, 16, 15, 16, 15, 19],
+#     "calories1": [420, 380, 390, 380, 400, 390],
+#   "duration1": [50, 40, 45, 50, 50, 45],
+#   "test1":[12, 16, 15, 16, 15, 19],
+#     "calories3": [420, 380, 390, 380, 400, 390],
+#   "duration3": [50, 40, 45, 50, 50, 45],
+#   "test3":[12, 16, 15, 16, 15, 19],
+#     "calories4": [420, 380, 390, 380, 400, 390],
+#   "duration4": [50, 40, 45, 50, 50, 45],
+#   "test4":[12, 16, 15, 16, 15, 19],
+# }
+
+# df = pd.DataFrame(data)
+# st.dataframe(df)
 df = pd.DataFrame()
+firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
+result = firebaseDB.get('/FinalProject', '')
+# print(result)
 
-if df not in st.session_state:
-    st.session_state.df = df
+Prediction = pd.DataFrame()
+Probability = pd.DataFrame()
+Result = pd.DataFrame()
+Time = pd.DataFrame()
+Std3 = pd.DataFrame()
+Std2 = pd.DataFrame()
+Mean2 = pd.DataFrame()
+Std1 = pd.DataFrame()
+PToP1 = pd.DataFrame()
+PToP4 = pd.DataFrame()
+PToP2 = pd.DataFrame()
+Std4 = pd.DataFrame()
+Kurtosis1 = pd.DataFrame()
+Kurtosis4 = pd.DataFrame()
 
-data = {
-  "calories": [420, 380, 390, 380, 400, 390],
-  "duration": [50, 40, 45, 50, 50, 45],
-  "test":[12, 16, 15, 16, 15, 19],
-    "calories1": [420, 380, 390, 380, 400, 390],
-  "duration1": [50, 40, 45, 50, 50, 45],
-  "test1":[12, 16, 15, 16, 15, 19],
-    "calories3": [420, 380, 390, 380, 400, 390],
-  "duration3": [50, 40, 45, 50, 50, 45],
-  "test3":[12, 16, 15, 16, 15, 19],
-    "calories4": [420, 380, 390, 380, 400, 390],
-  "duration4": [50, 40, 45, 50, 50, 45],
-  "test4":[12, 16, 15, 16, 15, 19],
-}
+for key, value in result.items():
+    # print(value['Kurtosis1'])
+    Prediction = value["Prediction"]
+    Probability = value["Probability"]
+    Result = value["Result"]
+    Time = value["Time"]
+    Std3 = value["Std3"]
+    Std2 = value["Std2"]
+    Mean2 = value["Mean2"]
+    Std1 = value["Std1"]
+    PToP1 = value["PToP1"]
+    PToP4 = value["PToP4"]
+    PToP2 = value["PToP2"]
+    Std4 = value["Std4"]
+    Kurtosis1 = value["Kurtosis1"]
+    Kurtosis4 = value["Kurtosis4"]
+    st.write(value)
+    # Prediction = pd.concat([Prediction, value["Prediction"]], axis=0)
+# st.write(Prediction)
+    # st.dataframe(Time)
+    # Data = {"Prediction":[Prediction],"Probability":[Probability]
+    #     ,"Result":[Result],"Time":[Time],"Std3":[Std3],
+    #       "Std2":[Std2],"Mean2":[Mean2],"Std1":[Std1],"PToP1":[PToP1],"PToP4":[PToP4],
+    #       "PToP2":[PToP2],"Std4":[Std4],"Kurtosis1":[Kurtosis1],"Kurtosis4":[Kurtosis4],}
 
-df = pd.DataFrame(data)
-st.dataframe(df)
+# st.dataframe(Prediction)       
+# Data = pd.DataFrame(Data)
+# df = pd.concat([df, Data], axis=1)
+# st.dataframe(df)
+# print(df)
+
+  

@@ -156,7 +156,7 @@ def MainProcess(df,Row,dataframe):
         result_for_predict = pd.concat([result_for_predict, newresult], axis=1)
         IfNotUseDatabase = pd.concat([IfNotUseDatabase,result_for_predict], axis=0)
         IfNotUseDatabase = IfNotUseDatabase.reset_index(drop=True)
-        # print(IfNotUseDatabase)
+        
 
         #if wanna see Result
         # print(okng,timeX,prediction_proba[0],prediction[0],Std3,Std2,Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4) 
@@ -187,30 +187,18 @@ def MainProcess(df,Row,dataframe):
         # print("Time use all: ",end_all - start_all)
     # print(DataQ)
     # placeholder.empty()
+    st.dataframe(IfNotUseDatabase)
     dataframe = pd.concat([dataframe,IfNotUseDatabase], axis=0)
+    # st.dataframe(dataframe)
+    ToFirebase(dataframe)
     # print(dataframe)
     return dataframe
 
 
 
 
-def BeforeMainProcess():
-    # df = pd.DataFrame()
-    # datax = {
-    #         "Result": [1.0]
-    #         }
-    # df = pd.DataFrame(datax)
-    df = pd.DataFrame()
-    if df in st.session_state:
-        st.session_state.df = df
-    # else:
-    #     st.session_state.df = df
-    # st.sidebar.write(st.session_state.df)
-    # st.session_state.df += 1
-    # st.sidebar.write(st.session_state.df)
+def BeforeMainProcess(dataframe):
     st.sidebar.write(''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase, k=10)))
-
-
     with st.sidebar:
         add_selectbox = st.selectbox(
                 "Change Dataset",("Data1","Data2","Data3","Data4","Data5","Data6")
@@ -265,18 +253,8 @@ def BeforeMainProcess():
     if Start:
         # print("Start")
         placeholder.empty()
-        st.session_state.key = MainProcess(data,Row,df)
-    # st.write(st.session_state.key)
-    try:
-        st.session_state.df = pd.concat([st.session_state.df,st.session_state.key], axis=0)
-        # st.session_state.df = st.session_state.key
-        st.session_state.df = st.session_state.df.reset_index(drop=True)
-        st.write(st.session_state.df)
-        df = st.session_state.df
-        # st.write(df)
-    except:
-        pass
-    # st.write(st.session_state.df)
+        MainProcess(data,Row,dataframe)
+
 
     
     # st.sidebar.title('Counter Example')
