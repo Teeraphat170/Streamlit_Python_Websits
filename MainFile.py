@@ -106,7 +106,7 @@ def FromDatabase():
 
 
 # Main
-def MainProcess(df,Row,dataframe,Remain_Or_Not):
+def MainProcess(df,Row,dataframe,Remain_Or_Not,options1):
     # print("Calculate")
     TestX = df
     # TestX = TestX.iloc[: , 1:] 
@@ -260,7 +260,7 @@ def MainProcess(df,Row,dataframe,Remain_Or_Not):
 
         start = time.time()
         with placeholder.container():
-            DataQ = Run(IfNotUseDatabase,Data_From_Database,Remain_Or_Not)
+            DataQ = Run(IfNotUseDatabase,Data_From_Database,options1)
             # Run()
         end = time.time()
         # print("Time use in Chart: ",end - start)
@@ -275,9 +275,8 @@ def MainProcess(df,Row,dataframe,Remain_Or_Not):
         end_all = time.time()
         # print("Time use all: ",end_all - start_all)
 
-
     # st.dataframe(IfNotUseDatabase)
-    if Remain_Or_Not == 1:
+    if Remain_Or_Not == "Collect":
         dataframe = pd.concat([dataframe,IfNotUseDatabase], axis=0)
         ToFirebase(dataframe)
 
@@ -388,25 +387,31 @@ def BeforeMainProcess(dataframe):
         Row = st.sidebar.slider('Change Row After Sliding Windows', 1, 10, 5,label_visibility="visible")
         st.session_state["Row"] = Row
         # st.sidebar.write(Row)
-        Remain_Data = st.sidebar.radio("Want To Remain Data After Start?",('Yes', 'No'),index=1)
+        Remain_Data = st.sidebar.radio("Want To Remain Data After Start?",('Yes', 'No'),index=1, key="Database")
         if Remain_Data == 'No':
-            Remain_Or_Not = 0
+            Remain_Or_Not = "Not Collect"
             st.session_state["Remain_Data"] = Remain_Or_Not
         else:
-            Remain_Or_Not = 1
+            Remain_Or_Not = "Collect"
             st.session_state["Remain_Data"] = Remain_Or_Not
-        st.sidebar.write("Delete data from database ⚠️")
-        Delete = st.sidebar.button("Delete", key = "Database",use_container_width=True)
+        st.sidebar.write("⚠️ Delete data from database ⚠️")
+        Delete = st.sidebar.button("Delete", key = "Delete_Database",use_container_width=True)
         if Delete:
             firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
             firebaseDB.delete('/', '')
-    # st.sidebar.write(st.session_state)
-    Start = st.sidebar.button("Click here to start")
+        options1 = st.sidebar.multiselect('Select Features In Line chart 1',["Std3","Std2","Mean2","Std1","PToP1"],
+                                         ["Std3","Std2","Mean2","Std1","PToP1"],key='LineChart1')
+        if options1:
+            st.session_state["Line_Chart1"] = options1
+
+
+    st.sidebar.write(st.session_state)
+    Start = st.sidebar.button("Click here to start",use_container_width=True)
     if Start:
         # print("Start")
         placeholder.empty()
-        MainProcess(data,st.session_state["Row"],dataframe,st.session_state["Remain_Data"])
-    
+        MainProcess(data,st.session_state["Row"],dataframe,st.session_state["Remain_Data"],st.session_state["Line_Chart1"])
+
 
     
         # st.title('Counter Example')

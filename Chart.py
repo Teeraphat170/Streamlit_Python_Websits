@@ -8,7 +8,7 @@ import streamlit as st
 import warnings
 warnings.filterwarnings("ignore")
 
-def Run(IfNotUseDatabase,Data_From_Database,Remain_Or_Not):
+def Run(IfNotUseDatabase,Data_From_Database,options1):
     # print("Chart")
 
     df = pd.DataFrame()
@@ -92,7 +92,15 @@ def Run(IfNotUseDatabase,Data_From_Database,Remain_Or_Not):
         col2, col3 = st.columns((30,30))
         with col2:
             st.header("Line Chart")
-            Data1 = DataQ[["Std3","Std2","Mean2","Std1","PToP1","Time"]]
+            for_line_chart1 = pd.DataFrame()
+            # Data1 = DataQ[["Std3","Std2","Mean2","Std1","PToP1","Time"]]
+            for x in options1:
+                # FFF.append(DataQ[x])
+                for_line_chart1 = pd.concat([for_line_chart1,DataQ[x]], axis=1)
+                # print(DataQ[x])
+
+            Data1 = pd.concat([for_line_chart1,DataQ["Time"]], axis=1)
+            # Data1 = DataQ[["Std3","Std2","Mean2","Std1","PToP1","Time"]]
             st.line_chart(Data1, x = 'Time')
 
             # fig = px.line(DataQ, x = 'Time',y = DataQ.columns[2:-6])
