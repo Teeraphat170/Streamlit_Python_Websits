@@ -8,7 +8,7 @@ import streamlit as st
 import warnings
 warnings.filterwarnings("ignore")
 
-def Run(IfNotUseDatabase,Name_for_database):
+def Run(IfNotUseDatabase,Data_From_Database,Remain_Or_Not):
     # print("Chart")
 
     df = pd.DataFrame()
@@ -43,10 +43,17 @@ def Run(IfNotUseDatabase,Name_for_database):
     # df = df.reset_index(drop=True)
     # # print(df)
     # DataQ = df[["Prediction","Probability","Std3","Std2","Mean2","Std1","PToP1","PToP4","PToP2","Std4","Kurtosis1","Kurtosis4","Time"]]
+    try:
+        Data_From_Database = Data_From_Database[["Prediction","Probability","Std3","Std2","Mean2","Std1","PToP1","PToP4","PToP2","Std4","Kurtosis1","Kurtosis4","Time"]]
+    except:
+        pass
 
-    # If want Data from dataframe
     DataQ = IfNotUseDatabase[["Prediction","Probability","Std3","Std2","Mean2","Std1","PToP1","PToP4","PToP2","Std4","Kurtosis1","Kurtosis4","Time"]]
+    
 
+    DataQ = pd.concat([Data_From_Database,DataQ],axis=0)
+    DataQ = DataQ.reset_index(drop=True)
+    # st.dataframe(DataQ["Prediction"])
     # CSS
     
     with open('Style.css') as f: # Test.css with command prompt : TestFolder/Test.css with PowerShell

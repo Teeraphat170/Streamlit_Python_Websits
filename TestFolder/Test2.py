@@ -413,7 +413,7 @@ warnings.filterwarnings("ignore")
 
 # df = pd.DataFrame(data)
 # st.dataframe(df)
-df = pd.DataFrame()
+# df = pd.DataFrame()
 firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
 result = firebaseDB.get('/FinalProject', '')
 # print(result)
@@ -515,4 +515,25 @@ st.write(Total)
 # st.dataframe(df)
 # print(df)
 
-  
+  # Store the initial value of widgets in session state
+# if "visibility" not in st.session_state:
+#     st.session_state.visibility = "visible"
+#     st.session_state.disabled = False
+
+# col1, col2 = st.columns(2)
+
+# with col1:
+#     st.checkbox("Disable selectbox widget", key="disabled")
+#     st.radio(
+#         "Set selectbox label visibility 👉",
+#         key="visibility",
+#         options=["visible", "hidden", "collapsed"],
+#     )
+
+# with col2:
+#     option = st.selectbox(
+#         "How would you like to be contacted?",
+#         ("Email", "Home phone", "Mobile phone"),
+#         label_visibility=st.session_state.visibility,
+#         disabled=st.session_state.disabled,
+#     )

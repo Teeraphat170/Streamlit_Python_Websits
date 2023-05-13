@@ -124,10 +124,12 @@ def MainProcess(df,Row,dataframe,Remain_Or_Not):
     ###### Sliding Windows
     First,Last = 0,390
 
+    Data_From_Database = pd.DataFrame()
+
     # Fromdatabase
     try:
         Data_From_Database = FromDatabase()
-        print(Data_From_Database)
+        # print(Data_From_Database)
     except:
         pass
 
@@ -248,22 +250,17 @@ def MainProcess(df,Row,dataframe,Remain_Or_Not):
         result_for_predict = pd.concat([result_for_predict, newresult], axis=1)
         IfNotUseDatabase = pd.concat([IfNotUseDatabase,result_for_predict], axis=0)
         IfNotUseDatabase = IfNotUseDatabase.reset_index(drop=True)
-        
+        # print(IfNotUseDatabase)
 
         #if wanna see Result
         # print(okng,timeX,prediction_proba[0],prediction[0],Std3,Std2,Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4) 
 
-        # ToFirebase
-        # ToFirebase(OKNG,timeX,prediction_proba,prediction,Std3,Std2,Mean2,Std1,PToP1,PToP4,PToP2,Std4,Kurtosis1,Kurtosis4,Name_for_database)
-        try:
-            dataframeX = dataframe[["Result","Time","Probability","Prediction",'Std3','Std2','Mean2','Std1','PToP1','PToP4','PToP2','Std4','Kurtosis1','Kurtosis4']]
-            IfNotUseDatabase = pd.concat([IfNotUseDatabase,dataframeX], axis=0)
-        except:
-            pass
+        if Remain_Or_Not == 0:
+            Data_From_Database = pd.DataFrame()
 
         start = time.time()
         with placeholder.container():
-            DataQ = Run(IfNotUseDatabase,Name_for_database)
+            DataQ = Run(IfNotUseDatabase,Data_From_Database,Remain_Or_Not)
             # Run()
         end = time.time()
         # print("Time use in Chart: ",end - start)
@@ -291,10 +288,12 @@ def MainProcess(df,Row,dataframe,Remain_Or_Not):
 
 
 def BeforeMainProcess(dataframe):
-    st.sidebar.write(''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase, k=10)))
+    # st.sidebar.write(''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase, k=10)))
+    Row = 5
+    Remain_Or_Not = 0
     with st.sidebar:
         add_selectbox = st.selectbox(
-                "Change Dataset",("Data1","Data2","Data3","Data4","Data5","Data6")
+                "⚙️ Change Dataset",("Data1","Data2","Data3","Data4","Data5","Data6")
             )
         
         if "Data1" in add_selectbox: 
@@ -312,82 +311,113 @@ def BeforeMainProcess(dataframe):
 
     placeholder = st.empty()
     with placeholder.container():
-        tab1, tab3 = st.tabs(["🎉 Welcome", "⚙️ Setting"])
-        with tab1:
-            st.markdown("# :black[คำอธิบายโปรเจค] ")
-            col1, col2, col3 = st.columns([1.5,1,1])
-            with col1:
-                image = Image.open('Component/Picture/R04CPU.png')
-                st.image(image, caption='R04CPU')
-            with col2:
-                st.write("")
-                st.write("")
-                st.write("""สำหรับหน้าเว็บนี้จะเป็น  Dashboard ไว้ใช้สำหรับดูและตรวจสอบผลการทำงานของ PLC  
+        # tab1, tab3 = st.tabs(["🎉 Welcome", "⚙️ Setting"])
+        # with tab1:
+        st.markdown("# :black[คำอธิบายโปรเจค] ")
+        col1, col2, col3 = st.columns([1.5,1,1])
+        with col1:
+            image = Image.open('Component/Picture/R04CPU.png')
+            st.image(image, caption='R04CPU')
+        with col2:
+            st.write("")
+            st.write("")
+            st.write("""สำหรับหน้าเว็บนี้จะเป็น  Dashboard ไว้ใช้สำหรับดูและตรวจสอบผลการทำงานของ PLC  
                 R04CPU (รูปด้านซ้ายมือ) โดยจะมีการแสดงผลทั้งแบบ กราฟเส้น กราฟวงกลม และตารางผลการทำงาน 
                 ในขณะที่เครื่องทำงานอยู่""")
 
-        with tab3:
-            st.header(":black[Change Row After Sliding Windows] ")
-            Row_change = 5
-            col1, col2 = st.columns((2,3))
-            with col1:
-                # Delete = st.button("Delete", key = "Database",use_container_width=False)
-                Row = st.slider('Change Row After Sliding Windows', 1, 10, 10,label_visibility="visible")
-                # Row = st.selectbox('How would you like to be contacted?',(5, 6, 7, 8, 9, 10))
-            with col2:
-                st.write("")
-                if Row != Row_change:
-                    st.success('Change Success!', icon="✅")
-                else:
-                    st.warning('Default Value of Row After Sliding Windows', icon="⚠️")
+        # with tab3:
+            # st.header(":black[Change Row After Sliding Windows] ")
+            # Row_change = 5
+            # col1, col2 = st.columns((2,3))
+            # with col1:
+            #     Row = st.slider('Change Row After Sliding Windows', 1, 10, 10,label_visibility="visible")
+            #     if Row not in st.session_state:
+            #         st.session_state.Row = Row
 
-            st.header(":black[Data After Start Finish] ")
-            col3, col4 = st.columns((2,3))
-            with col3:
-                Remain_Data = st.radio("Want To Remain Data After Start?",('Yes', 'No'),index=1)
-            with col4:
-                st.write("")
-                if Remain_Data == 'No':
-                    Remain_Or_Not = 0
-                    st.write("")
-                    st.warning('If select Yes Data after run will be Remain', icon="⚠️")  
-                else:
-                    Remain_Or_Not = 1
-                    st.write("")
-                    st.success('Change Success!', icon="✅")
+            # with col2:
+            #     st.write("")
+            #     if Row != Row_change:
+            #         st.success('Change Success!', icon="✅")
+            #     else:
+            #         st.warning('Default Value of Row After Sliding Windows', icon="⚠️")
 
-            st.header(":black[Delete data from database] ")
-            col5, col6 = st.columns((2,3))
-            with col5:
-                st.write("")
-                Delete = st.button("Delete", key = "Database",use_container_width=True)
+            # st.header(":black[Data After Start Finish] ")
+            # col3, col4 = st.columns((2,3))
+            # with col3:
+            #     Remain_Data = st.radio("Want To Remain Data After Start?",('Yes', 'No'),index=1)
+            # with col4:
+            #     st.write("")
+            #     if Remain_Data == 'No':
+            #         Remain_Or_Not = 0
+            #         st.write("")
+            #         st.warning('If select Yes Data after run will be Remain', icon="⚠️")  
+            #     else:
+            #         Remain_Or_Not = 1
+            #         st.write("")
+            #         st.success('Change Success!', icon="✅")
 
-            with col6:
+            # st.header(":black[Delete data from database] ")
+            # col5, col6 = st.columns((2,3))
+            # with col5:
+            #     st.write("")
+            #     Delete = st.button("Delete", key = "Database",use_container_width=True)
+
+            # with col6:
                 
-                if Delete:
-                    firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
-                    firebaseDB.delete('/', '')
-                    st.success('Change Delete!', icon="✅")
-                else:
-                    st.warning('It will all delete data from database', icon="⚠️")
-      
+            #     if Delete:
+            #         firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
+            #         firebaseDB.delete('/', '')
+            #         st.success('Change Delete!', icon="✅")
+            #     else:
+            #         st.warning('It will all delete data from database', icon="⚠️")
+
+
+    # option = st.sidebar.selectbox('Setting',('Not Change', 'Change'), index = 0 , key="visibility")
+
+    
+    # if "visibility" not in st.session_state:
+    #     st.session_state.visibility = "Change"
+    # if "Row" not in st.session_state:
+    #     st.session_state["Row"] = 10
+
+    # if "Remain_Data" not in st.session_state:
+    #     st.session_state["Remain_Data"] = 0
+
+    option = st.sidebar.selectbox('⚙️ Setting', options=['Not Change', 'Change'], index = 0 , key="visibility")
+    if option == "Change":
+        Row = st.sidebar.slider('Change Row After Sliding Windows', 1, 10, 5,label_visibility="visible")
+        st.session_state["Row"] = Row
+        # st.sidebar.write(Row)
+        Remain_Data = st.sidebar.radio("Want To Remain Data After Start?",('Yes', 'No'),index=1)
+        if Remain_Data == 'No':
+            Remain_Or_Not = 0
+            st.session_state["Remain_Data"] = Remain_Or_Not
+        else:
+            Remain_Or_Not = 1
+            st.session_state["Remain_Data"] = Remain_Or_Not
+        st.sidebar.write("Delete data from database ⚠️")
+        Delete = st.sidebar.button("Delete", key = "Database",use_container_width=True)
+        if Delete:
+            firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
+            firebaseDB.delete('/', '')
+    # st.sidebar.write(st.session_state)
     Start = st.sidebar.button("Click here to start")
     if Start:
         # print("Start")
         placeholder.empty()
-        MainProcess(data,Row,dataframe,Remain_Or_Not)
-
+        MainProcess(data,st.session_state["Row"],dataframe,st.session_state["Remain_Data"])
+    
 
     
-    # st.sidebar.title('Counter Example')
-    # if 'count' not in st.session_state:
-    #     st.session_state.count = 0
+        # st.title('Counter Example')
+        # if 'count' not in st.session_state:
+        #     st.session_state.count = 0
 
-    # increment = st.sidebar.button('Increment')
-    # if increment:
-    #     st.session_state.count += 1
+        # increment = st.button('Increment')
+        # if increment:
+        #     st.session_state.count += 1
 
-    #     st.sidebar.write('Count = ', st.session_state.count)
+        #     st.sidebar.write('Count = ', st.session_state.count)
 
 
     
