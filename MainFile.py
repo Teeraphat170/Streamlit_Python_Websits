@@ -320,10 +320,15 @@ def BeforeMainProcess(dataframe):
         with col2:
             st.write("")
             st.write("")
-            st.write("""สำหรับหน้าเว็บนี้จะเป็น  Dashboard ไว้ใช้สำหรับดูและตรวจสอบผลการทำงานของ PLC  
+            Text = """สำหรับหน้าเว็บนี้จะเป็น  Dashboard ไว้ใช้สำหรับดูและตรวจสอบผลการทำงานของ PLC  
                 R04CPU (รูปด้านซ้ายมือ) โดยจะมีการแสดงผลทั้งแบบ กราฟเส้น กราฟวงกลม และตารางผลการทำงาน 
-                ในขณะที่เครื่องทำงานอยู่""")
-
+                ในขณะที่เครื่องทำงานอยู่ โดยวิธีใช้คือ \nในส่วนของ Change Dataset นั้นเอาไว้เลือก Data ที่จะเอามาใช้ Setting 
+                ตือตั้งค่าต่างๆก่อนที่จะเริ่มการแสดง Dashboard โดยมีรายละเอียดดังนี้ \n1.Change Row After Sliding Windows เอาไว้ทำการสไลด์ Row
+                ตามที่กำหนดไว้ เช่น ถ้าเลือกไว้ 5 จาก Row ที่ 1-400 สไลด์ต่อไปก็จะเป็น Row ที่ 6-406 \n2.Want To Remain Data After Start? เมื่อรันเสร็จแล้วต้องการให้
+                เก็บข้อมูลที่รันไว้ไหม โดยถ้าเป็นการรันครั้งต่อไปจะเอาข้อมูลจากการรันครั้งที่แล้วที่แล้วมาแสดงใน Dashboard ด้วย 
+                \n3.Delete all remain data คือการลบข้อมูลที่เก็บไว้ทั้งหมด \n4.Select Features In Line chart 
+                จะเป็นการเลือกว่าจะให้ Feature ไหนได้แสดงบ้างใน Line Chart"""
+            st.write(Text)
         # with tab3:
             # st.header(":black[Change Row After Sliding Windows] ")
             # Row_change = 5
