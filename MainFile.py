@@ -296,7 +296,7 @@ def BeforeMainProcess(dataframe):
             )
         
         if "Data1" in add_selectbox: 
-            data = pd.read_csv('Component/Data/Dataset/TotalFile35_36.csv') # Ex = data.reset_index(drop=True)
+            data = pd.read_csv('Component/Data/Dataset/All134.csv') # Ex = data.reset_index(drop=True)
         elif "Data2" in add_selectbox:
             data = pd.read_csv('Component/Data/Dataset/TotalFile36_37.csv') # Ex = data.reset_index(drop=True)
         elif "Data3" in add_selectbox:
@@ -306,8 +306,9 @@ def BeforeMainProcess(dataframe):
         elif "Data5" in add_selectbox:
             data = pd.read_csv('Component/Data/Dataset/TotalFile98_9c.csv')
         elif "Data6" in add_selectbox:
-            data = pd.read_csv('Component/Data/Dataset/All134.csv')
-
+            # data = pd.read_csv('Component/Data/Dataset/All134.csv')
+            data = pd.read_csv('Component/Data/Dataset/TotalFile35_36.csv')
+            
     placeholder = st.empty()
     with placeholder.container():
         # tab1, tab3 = st.tabs(["🎉 Welcome", "⚙️ Setting"])
