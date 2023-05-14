@@ -8,7 +8,7 @@ import streamlit as st
 import warnings
 warnings.filterwarnings("ignore")
 
-def Run(IfNotUseDatabase,Data_From_Database,options1):
+def Run(IfNotUseDatabase,Data_From_Database,options1,options2):
     # print("Chart")
 
     df = pd.DataFrame()
@@ -109,11 +109,21 @@ def Run(IfNotUseDatabase,Data_From_Database,options1):
         with col3: 
             # start = time.time()
             st.header("Line Chart")
+            for_line_chart2 = pd.DataFrame()
+            # Data1 = DataQ[["Std3","Std2","Mean2","Std1","PToP1","Time"]]
+            for x in options2:
+                # FFF.append(DataQ[x])
+                for_line_chart2 = pd.concat([for_line_chart2,DataQ[x]], axis=1)
+                # print(DataQ[x])
+
+            Data2 = pd.concat([for_line_chart2,DataQ["Time"]], axis=1)
+            # Data1 = DataQ[["Std3","Std2","Mean2","Std1","PToP1","Time"]]
+            st.line_chart(Data2, x = 'Time')
             # fig = px.line(DataQ, x = 'Time',y = DataQ.columns[7:-1])
             # st.plotly_chart(fig, use_container_width=True)
 
-            Data2 = DataQ[["PToP4","PToP2","Std4","Kurtosis1","Kurtosis4","Time"]]
-            st.line_chart(Data2, x = 'Time')
+            # Data2 = DataQ[["PToP4","PToP2","Std4","Kurtosis1","Kurtosis4","Time"]]
+            # st.line_chart(Data2, x = 'Time')
 
             # end = time.time()
             # print("Time use Chart: ",end - start)

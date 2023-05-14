@@ -106,7 +106,7 @@ def FromDatabase():
 
 
 # Main
-def MainProcess(df,Row,dataframe,Remain_Or_Not,options1):
+def MainProcess(df,Row,dataframe,Remain_Or_Not,options1,options2):
     # print("Calculate")
     TestX = df
     # TestX = TestX.iloc[: , 1:] 
@@ -260,7 +260,7 @@ def MainProcess(df,Row,dataframe,Remain_Or_Not,options1):
 
         start = time.time()
         with placeholder.container():
-            DataQ = Run(IfNotUseDatabase,Data_From_Database,options1)
+            DataQ = Run(IfNotUseDatabase,Data_From_Database,options1,options2)
             # Run()
         end = time.time()
         # print("Time use in Chart: ",end - start)
@@ -394,7 +394,7 @@ def BeforeMainProcess(dataframe):
         else:
             Remain_Or_Not = "Collect"
             st.session_state["Remain_Data"] = Remain_Or_Not
-        st.sidebar.write("⚠️ Delete data from database ⚠️")
+        st.sidebar.write("⚠️ Delete all remain data ⚠️")
         Delete = st.sidebar.button("Delete", key = "Delete_Database",use_container_width=True)
         if Delete:
             firebaseDB = firebase.FirebaseApplication("https://finalproject-b05e3-default-rtdb.firebaseio.com/",None)
@@ -404,13 +404,18 @@ def BeforeMainProcess(dataframe):
         if options1:
             st.session_state["Line_Chart1"] = options1
 
+        options2 = st.sidebar.multiselect('Select Features In Line chart 2',["PToP4","PToP2","Std4","Kurtosis1","Kurtosis4"],
+                                         ["PToP4","PToP2","Std4","Kurtosis1","Kurtosis4"],key='LineChart2')
+        if options2:
+            st.session_state["Line_Chart2"] = options2
 
-    st.sidebar.write(st.session_state)
+
+    # st.sidebar.write(st.session_state)
     Start = st.sidebar.button("Click here to start",use_container_width=True)
     if Start:
         # print("Start")
         placeholder.empty()
-        MainProcess(data,st.session_state["Row"],dataframe,st.session_state["Remain_Data"],st.session_state["Line_Chart1"])
+        MainProcess(data,st.session_state["Row"],dataframe,st.session_state["Remain_Data"],st.session_state["Line_Chart1"],st.session_state["Line_Chart2"])
 
 
     
