@@ -18,7 +18,7 @@ import plotly.express as px
 # warnings.filterwarnings("ignore")
 # data = pd.read_csv('Data/Dataset/TotalFile35_36.csv')
 
-st.set_page_config(page_icon=":bar_chart:", layout="wide")
+st.set_page_config(page_title="Anomaly Detection for Predictive Maintenance",page_icon=":bar_chart:", layout="wide")
 
 # Start = st.button("Click here to start")
 # if Start:
