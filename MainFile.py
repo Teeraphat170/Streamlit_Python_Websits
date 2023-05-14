@@ -313,7 +313,7 @@ def BeforeMainProcess(dataframe):
         # tab1, tab3 = st.tabs(["🎉 Welcome", "⚙️ Setting"])
         # with tab1:
         st.markdown("# :black[คำอธิบายโปรเจค] ")
-        col1, col2, col3 = st.columns([1.5,1,1])
+        col1, col2 = st.columns([1,2])
         with col1:
             image = Image.open('Component/Picture/R04CPU.png')
             st.image(image, caption='R04CPU')
@@ -329,7 +329,7 @@ def BeforeMainProcess(dataframe):
                 \n3.Delete all remain data คือการลบข้อมูลที่เก็บไว้ทั้งหมด \n4.Select Features In Line chart 
                 จะเป็นการเลือกว่าจะให้ Feature ไหนได้แสดงบ้างใน Line Chart"""
             st.write(Text)
-            
+
         # with tab3:
             # st.header(":black[Change Row After Sliding Windows] ")
             # Row_change = 5
