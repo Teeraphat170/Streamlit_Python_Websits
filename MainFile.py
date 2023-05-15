@@ -332,7 +332,7 @@ def BeforeMainProcess(dataframe):
                 \n4.Select Features In Line chart 
                 จะเป็นการเลือกว่าจะให้ Feature ไหนได้แสดงบ้างใน Line Chart"""
             st.write(Text)
-
+            
         # with tab3:
             # st.header(":black[Change Row After Sliding Windows] ")
             # Row_change = 5
