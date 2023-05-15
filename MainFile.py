@@ -312,7 +312,7 @@ def BeforeMainProcess(dataframe):
     with placeholder.container():
         # tab1, tab3 = st.tabs(["🎉 Welcome", "⚙️ Setting"])
         # with tab1:
-        st.markdown("# :black[คำอธิบายโปรเจค] ")
+        st.markdown("# :black[คำอธิบาย Web Application] ")
         col1, col2 = st.columns([1,2], gap="large")
         with col1:
             image = Image.open('Component/Picture/R04CPU.png')
