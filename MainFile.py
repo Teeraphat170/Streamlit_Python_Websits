@@ -288,8 +288,8 @@ def MainProcess(df,Row,dataframe,Remain_Or_Not,options1,options2):
 
 def BeforeMainProcess(dataframe):
     # st.sidebar.write(''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase, k=10)))
-    Row = 5
-    Remain_Or_Not = 0
+    # Row = 5
+    # Remain_Or_Not = 0
     with st.sidebar:
         add_selectbox = st.selectbox(
                 "⚙️ Change Dataset",("Data1","Data2","Data3","Data4","Data5","Data6")
@@ -313,7 +313,7 @@ def BeforeMainProcess(dataframe):
         # tab1, tab3 = st.tabs(["🎉 Welcome", "⚙️ Setting"])
         # with tab1:
         st.markdown("# :black[คำอธิบายโปรเจค] ")
-        col1, col2 = st.columns([1,2])
+        col1, col2 = st.columns([1,2], gap="large")
         with col1:
             image = Image.open('Component/Picture/R04CPU.png')
             st.image(image, caption='R04CPU')
