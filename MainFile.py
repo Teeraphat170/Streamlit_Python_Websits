@@ -216,8 +216,8 @@ def MainProcess(df,Row,dataframe,Remain_Or_Not,options1,options2):
         # result = pd.concat([result, RMS], axis=1)
 
         
-        # newresult = result[['Std3','Std2','Mean2','Std1','PToP1','PToP4','PToP2','Std4','Kurtosis1','Kurtosis4']]
-        newresult = result[['Std3', 'Std2', 'Mean2', 'Std1', 'PToP1', 'PToP4', 'PToP2','Std4','Kurtosis4','Kurtosis1']]
+        newresult = result[['Std3','Std2','Mean2','Std1','PToP1','PToP4','PToP2','Std4','Kurtosis1','Kurtosis4']]
+        # newresult = result[['Std3', 'Std2', 'Mean2', 'Std1', 'PToP1', 'PToP4', 'PToP2','Std4','Kurtosis4','Kurtosis1']]
         
         # print(newresult)
 
