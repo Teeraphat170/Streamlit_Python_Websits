@@ -1,5 +1,6 @@
 import pickle
 from datetime import datetime
+from sklearn.ensemble import IsolationForest
 
 
 
@@ -8,8 +9,8 @@ def predict(TestX):
     time = datetime.today().strftime('%H:%M:%S')
     df = TestX
 
-    # load_clf = pickle.load(open('Component/Data/Model/IsolationForest_7.pkl', 'rb')) 
-    load_clf = pickle.load(open('Component/Data/Model/IsolationForest.pkl.pkl', 'rb')) 
+    load_clf = pickle.load(open('Component/Data/Model/IsolationForest_9.pkl', 'rb')) 
+
 
     # IsolationForest
     prediction = load_clf.predict(df) 

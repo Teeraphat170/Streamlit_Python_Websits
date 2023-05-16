@@ -216,7 +216,9 @@ def MainProcess(df,Row,dataframe,Remain_Or_Not,options1,options2):
         # result = pd.concat([result, RMS], axis=1)
 
         
-        newresult = result[['Std3','Std2','Mean2','Std1','PToP1','PToP4','PToP2','Std4','Kurtosis1','Kurtosis4']]
+        # newresult = result[['Std3','Std2','Mean2','Std1','PToP1','PToP4','PToP2','Std4','Kurtosis1','Kurtosis4']]
+        newresult = result[['Std3', 'Std2', 'Mean2', 'Std1', 'PToP1', 'PToP4', 'PToP2','Std4','Kurtosis4','Kurtosis1']]
+        
         # print(newresult)
 
         # Std3 = newresult.get("Std3")
@@ -288,8 +290,8 @@ def MainProcess(df,Row,dataframe,Remain_Or_Not,options1,options2):
 
 def BeforeMainProcess(dataframe):
     # st.sidebar.write(''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase, k=10)))
-    # Row = 5
-    # Remain_Or_Not = 0
+    Row = 5
+    Remain_Or_Not = 0
     with st.sidebar:
         add_selectbox = st.selectbox(
                 "⚙️ Change Dataset",("Data1","Data2","Data3","Data4","Data5","Data6")
