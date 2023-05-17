@@ -396,8 +396,9 @@ def BeforeMainProcess(dataframe):
     option = st.sidebar.selectbox('⚙️ Setting', options=['Not Change', 'Change'], index = 0 , key="visibility")
     if option == "Change":
         Row = st.sidebar.slider('Change Row After Sliding Windows', 1, 10, 5,label_visibility="visible")
-        if Row not in st.session_state: #Add
-            st.session_state["Row"] = Row
+        st.session_state["Row"] = Row
+        # if Row not in st.session_state: #Add
+        #     st.session_state["Row"] = Row
         Remain_Data = st.sidebar.radio("Want To Remain Data After Start?",('Yes', 'No'),index=1, key="Database")
         if Remain_Data == 'No':
             Remain_Or_Not = "Not Collect"
