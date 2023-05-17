@@ -392,7 +392,9 @@ def BeforeMainProcess(dataframe):
 
     # if "Remain_Data" not in st.session_state:
     #     st.session_state["Remain_Data"] = 0
-
+    if Row not in st.session_state: #Add
+        st.session_state["Row"] = Row
+        
     option = st.sidebar.selectbox('⚙️ Setting', options=['Not Change', 'Change'], index = 0 , key="visibility")
     if option == "Change":
         Row = st.sidebar.slider('Change Row After Sliding Windows', 1, 10, 5,label_visibility="visible")
