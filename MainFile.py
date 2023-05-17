@@ -397,6 +397,8 @@ def BeforeMainProcess(dataframe):
     options1 = ["Std3","Std2","Mean2","Std1","PToP1"]
     options2 = ["PToP4","PToP2","Std4","Kurtosis1","Kurtosis4"]
 
+
+
     if Row not in st.session_state: #Add
         st.session_state["Row"] = Row
     if Remain_Data not in st.session_state: #Add
