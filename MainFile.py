@@ -292,6 +292,7 @@ def BeforeMainProcess(dataframe):
     # st.sidebar.write(''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase, k=10)))
     Row = 5
     Remain_Or_Not = 0
+    Remain_Data = 'No'
     with st.sidebar:
         add_selectbox = st.selectbox(
                 "⚙️ Change Dataset",("Data1","Data2","Data3","Data4","Data5","Data6")
@@ -394,7 +395,9 @@ def BeforeMainProcess(dataframe):
     #     st.session_state["Remain_Data"] = 0
     if Row not in st.session_state: #Add
         st.session_state["Row"] = Row
-        
+    if Remain_Data not in st.session_state: #Add
+        st.session_state["Remain_Data"] = Remain_Data
+
     option = st.sidebar.selectbox('⚙️ Setting', options=['Not Change', 'Change'], index = 0 , key="visibility")
     if option == "Change":
         Row = st.sidebar.slider('Change Row After Sliding Windows', 1, 10, 5,label_visibility="visible")
