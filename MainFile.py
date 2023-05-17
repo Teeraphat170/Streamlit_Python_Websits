@@ -396,7 +396,7 @@ def BeforeMainProcess(dataframe):
     Remain_Data = 'No'
     options1 = ["Std3","Std2","Mean2","Std1","PToP1"]
     options2 = ["PToP4","PToP2","Std4","Kurtosis1","Kurtosis4"]
-    
+
     if Row not in st.session_state: #Add
         st.session_state["Row"] = Row
     if Remain_Data not in st.session_state: #Add
@@ -427,12 +427,12 @@ def BeforeMainProcess(dataframe):
         options1 = st.sidebar.multiselect('Select Features In Line chart 1',["Std3","Std2","Mean2","Std1","PToP1"],
                                          ["Std3","Std2","Mean2","Std1","PToP1"],key='LineChart1')
         if options1:
-            st.session_state["Line_Chart1"] = options1
+            st.session_state["options1"] = options1
 
         options2 = st.sidebar.multiselect('Select Features In Line chart 2',["PToP4","PToP2","Std4","Kurtosis1","Kurtosis4"],
                                          ["PToP4","PToP2","Std4","Kurtosis1","Kurtosis4"],key='LineChart2')
         if options2:
-            st.session_state["Line_Chart2"] = options2
+            st.session_state["options2"] = options2
 
 
     # st.sidebar.write(st.session_state)
@@ -440,7 +440,7 @@ def BeforeMainProcess(dataframe):
     if Start:
         # print("Start")
         placeholder.empty()
-        MainProcess(data,st.session_state["Row"],dataframe,st.session_state["Remain_Data"],st.session_state["Line_Chart1"],st.session_state["Line_Chart2"])
+        MainProcess(data,st.session_state["Row"],dataframe,st.session_state["Remain_Data"],st.session_state["options1"],st.session_state["options2"])
 
 
     
